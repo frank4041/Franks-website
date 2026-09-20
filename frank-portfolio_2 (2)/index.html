@@ -157,8 +157,8 @@
     <main id="home" class="page-section active min-h-screen">
         <!-- Hero Section -->
         <header class="relative min-h-screen flex items-end overflow-hidden">
-            <video id="hero-video" class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline preload="auto">
-                <source src="assets/video_port.mp4" type="video/mp4">
+            <video id="hero-video" class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline preload="none" poster="assets/hero_poster.jpg">
+                <source data-src="assets/video_port.mp4" type="video/mp4">
             </video>
             <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/40"></div>
 
@@ -1275,6 +1275,30 @@
                 });
             }
         });
+    </script>
+
+    <!-- Hero video lazy-load: fires after first paint so the page feels instant -->
+    <script>
+        (function () {
+            function loadHeroVideo() {
+                var video = document.getElementById('hero-video');
+                if (!video) return;
+                var source = video.querySelector('source[data-src]');
+                if (!source) return;
+                source.src = source.getAttribute('data-src');
+                source.removeAttribute('data-src');
+                video.load();
+                video.play().catch(function () { /* autoplay blocked – muted loop will resume on interaction */ });
+            }
+            // requestIdleCallback = load after browser is idle; fallback to 300 ms
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(loadHeroVideo, { timeout: 2000 });
+            } else {
+                window.addEventListener('load', function () {
+                    setTimeout(loadHeroVideo, 300);
+                });
+            }
+        })();
     </script>
 </body>
 </html>
