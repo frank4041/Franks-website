@@ -120,6 +120,23 @@
             transform: translateX(8px);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
+        .ama-answer {
+            overflow: hidden;
+            max-height: 240px;
+            opacity: 1;
+            transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease;
+        }
+        .ama-answer[hidden] {
+            display: block;
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        .ama-item.is-open .ama-pill {
+            background: #FFFFFF;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
 
         html { scroll-behavior: smooth; }
         ::selection { background: #FF5E00; color: white; }
@@ -373,11 +390,69 @@
                     </div>
                 </article>
 
-                <!-- Category 4: VFX (small banner) -->
+                <!-- Category 4: Game Art -->
+                <article id="cat-game-art" class="group hover-trigger tilt-card-wrapper cursor-pointer relative col-span-2 lg:col-span-4 row-span-1 rounded-3xl overflow-hidden bg-stone-900 flex items-center justify-center" onclick="openProject('work-game-art')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative flex items-center justify-center p-8">
+                            <div class="text-center">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Game Art</span>
+                                <h3 class="font-display text-2xl md:text-3xl font-bold text-white mt-2">Game Art</h3>
+                                <p class="text-xs text-white/60 mt-2 uppercase tracking-widest">Asset Creation &bull; Character Creation</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Category 5: VFX (small banner) -->
                 <article id="cat-vfx" class="group hover-trigger tilt-card-wrapper cursor-pointer relative col-span-2 lg:col-span-4 row-span-1 rounded-3xl overflow-hidden bg-stone-200 flex items-center justify-center" onclick="alert('VFX gallery coming soon!')">
                     <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">VFX &bull; Coming Soon</span>
                 </article>
             </div>
+        </div>
+    </main>
+
+    <!-- ================= PAGE: WORK - GAME ART ================= -->
+    <main id="work-game-art" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-7xl mx-auto">
+            <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                Back to Work
+            </button>
+
+            <div class="flex items-center gap-6 mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">GAME ART</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+
+            <section class="mb-20">
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">01</span>
+                        <h3 class="font-display text-3xl font-bold mt-2">Asset Creation</h3>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">Props, weapons, environments and other game-focused 3D assets.</p>
+                    </div>
+                </div>
+                <div id="game-art-assets-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="aspect-square rounded-2xl bg-stone-100 border border-stone-200 flex items-center justify-center text-stone-400 text-xs uppercase tracking-widest">Upload assets here</div>
+                </div>
+            </section>
+
+            <section>
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">02</span>
+                        <h3 class="font-display text-3xl font-bold mt-2">Character Creation</h3>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">Characters, creatures and stylized or realistic game-ready character work.</p>
+                    </div>
+                </div>
+                <div id="game-art-characters-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="aspect-square rounded-2xl bg-stone-100 border border-stone-200 flex items-center justify-center text-stone-400 text-xs uppercase tracking-widest">Upload characters here</div>
+                </div>
+            </section>
         </div>
     </main>
 
@@ -465,7 +540,7 @@
                 <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-video rounded-3xl overflow-hidden bg-stone-200 mb-8 break-inside-avoid" onclick="window.open('https://www.behance.net/gallery/110041397/Evolution-Land-New-Drills-Ad', '_blank')">
                     <div class="tilt-card w-full h-full">
                         <div class="tilt-content w-full h-full relative">
-                            <img src="assets/evolution-land/evolution-land-boxes.jpg" alt="Evolution Land — New Drills Ad" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <img src="assets/evolution-land/evolution-land-boxes.jpg" alt="Evolution Land â New Drills Ad" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                             <div class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                 <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                             </div>
@@ -1042,7 +1117,7 @@
                     Instagram
                 </a>
                 <a href="https://www.behance.net/akintolafr04ef" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors hover-trigger">
-                    <span class="font-display font-bold text-base leading-none">Bē</span>
+                    <span class="font-display font-bold text-base leading-none">BÄ</span>
                     Behance
                 </a>
                 <a href="mailto:akintola.frank@gmail.com" class="flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors hover-trigger">
@@ -1073,6 +1148,31 @@
             }
             scheduleBlink();
         })();
+
+        // --- AMA ACCORDION ---
+        document.querySelectorAll('#ama-list .ama-item').forEach((item) => {
+            const button = item.querySelector('button');
+            const answer = item.querySelector('.ama-answer');
+            const icon = item.querySelector('.ama-icon');
+
+            button.addEventListener('click', () => {
+                const wasOpen = item.classList.contains('is-open');
+
+                document.querySelectorAll('#ama-list .ama-item').forEach((other) => {
+                    other.classList.remove('is-open');
+                    other.querySelector('button').setAttribute('aria-expanded', 'false');
+                    other.querySelector('.ama-answer').hidden = true;
+                    other.querySelector('.ama-icon').textContent = '+';
+                });
+
+                if (!wasOpen) {
+                    item.classList.add('is-open');
+                    button.setAttribute('aria-expanded', 'true');
+                    answer.hidden = false;
+                    icon.textContent = '−';
+                }
+            });
+        });
 
         // --- 1. NAVIGATION LOGIC ---
         const navIndicator = document.getElementById('nav-indicator');
@@ -1288,7 +1388,7 @@
                 source.src = source.getAttribute('data-src');
                 source.removeAttribute('data-src');
                 video.load();
-                video.play().catch(function () { /* autoplay blocked � muted loop will resume on interaction */ });
+                video.play().catch(function () { /* autoplay blocked  muted loop will resume on interaction */ });
             }
             // requestIdleCallback = load after browser is idle; fallback to 300 ms
             if ('requestIdleCallback' in window) {
