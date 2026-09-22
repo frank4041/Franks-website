@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frank | Motion & 3D Artist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/syne@5.0.21/index.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.8/index.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Syne', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        bg: '#FAFAF9',
+                        surface: '#F5F5F4',
+                        text: '#1C1917',
+                        muted: '#78716C',
+                        accent: '#FF5E00'
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root { --cursor-size: 24px; }
+        body { cursor: none; background-color: #FAFAF9; overflow-x: hidden; }
+        
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none; mix-blend-mode: difference;
+        }
+        .cursor-dot { width: 6px; height: 6px; background-color: white; }
+        .cursor-outline { 
+            width: var(--cursor-size); height: var(--cursor-size); 
+            border: 1px solid rgba(255, 255, 255, 0.5); 
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+        }
+        body:hover .cursor-outline.hovered {
+            width: 80px; height: 80px; background-color: white; opacity: 0.2; border-color: transparent;
+        }
+
+        /* --- CHARACTER BLINK CSS --- */
+        .character-container { position: relative; width: 100%; max-width: 500px; margin: 0 auto; }
+        .char-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; user-select: none; -webkit-user-drag: none; }
+        .char-eyes-open { opacity: 1; z-index: 2; transition: opacity 0.05s ease-in; }
+        .char-eyes-closed { opacity: 1; z-index: 1; }
+        .character-container.is-blinking .char-eyes-open { opacity: 0; }
+
+        /* --- FLOATING PILL NAV CSS --- */
+        .pill-nav-container {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            position: relative;
+            padding: 4px;
+            border-radius: 9999px;
+            display: flex;
+            gap: 4px;
+        }
+        .nav-indicator {
+            position: absolute;
+            top: 4px; bottom: 4px; left: 4px;
+            background-color: #E7E5E4;
+            border-radius: 9999px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 0; pointer-events: none;
+        }
+        .nav-item {
+            position: relative; z-index: 1;
+            padding: 8px 20px; font-size: 0.875rem; color: #78716C;
+            transition: color 0.3s ease; border-radius: 9999px; cursor: pointer; white-space: nowrap;
+        }
+        .nav-item:hover { color: #1C1917; }
+        .nav-item.active { color: #1C1917; font-weight: 600; }
+
+        /* --- PAGE TRANSITIONS --- */
+        .page-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .page-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 3D Tilt */
+        .tilt-card { transform-style: preserve-3d; transform: perspective(1000px); transition: transform 0.1s ease-out; }
+        .tilt-content { transform: translateZ(20px); }
+
+        /* AMA Styles */
+        .ama-pill {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+        .ama-pill:hover {
+            background: #FFFFFF;
+            transform: translateX(8px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+        .ama-answer-bubble {
+            position: absolute;
+            left: 64px;
+            width: min(250px, calc(100% - 64px));
+            padding: 10px 13px;
+            border-radius: 12px;
+            background: #1688F7;
+            color: #FFFFFF;
+            font-size: 10px;
+            line-height: 1.35;
+            font-weight: 500;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+            z-index: 5;
+            opacity: 0;
+            filter: blur(7px);
+            transform: translateY(8px) scale(0.97);
+            transform-origin: left top;
+            pointer-events: none;
+            transition: opacity 0.3s ease, filter 0.35s ease, transform 0.35s ease;
+        }
+        .ama-answer-bubble::after {
+            content: "";
+            position: absolute;
+            left: -6px;
+            top: 10px;
+            width: 12px;
+            height: 12px;
+            background: #1688F7;
+            transform: rotate(45deg);
+            border-radius: 2px;
+            z-index: -1;
+        }
+        .ama-answer-bubble.is-visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0) scale(1);
+        }
+        @media (max-width: 768px) {
+            .ama-answer-bubble {
+                left: 24px;
+                width: calc(100% - 24px);
+                max-width: 280px;
+            }
+        }
+        .ama-answer {
+            overflow: hidden;
+            max-height: 240px;
+            opacity: 1;
+            transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease;
+        }
+        .ama-answer[hidden] {
+            display: block;
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        .ama-item.is-open .ama-pill {
+            background: #FFFFFF;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        html { scroll-behavior: smooth; }
+        ::selection { background: #FF5E00; color: white; }
+        ::-webkit-scrollbar { width: 0px; }
+        
+        @media (max-width: 768px) {
+            body { cursor: auto; }
+            .cursor-dot, .cursor-outline { display: none; }
+        }
+    </style>
+</head>
+<body class="bg-bg text-text font-body antialiased">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-outline hidden md:block"></div>
+
+    <!-- Floating Pill Navigation -->
+    <div class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-auto">
+        <nav class="pill-nav-container" id="main-nav">
+            <div class="nav-indicator" id="nav-indicator"></div>
+            <button onclick="navigateTo('home')" id="nav-home" class="nav-item active hover-trigger">Home</button>
+            <button onclick="navigateTo('work')" id="nav-work" class="nav-item hover-trigger">Work</button>
+            <button onclick="navigateTo('lab')" id="nav-lab" class="nav-item hover-trigger">Lab</button>
+            <button onclick="navigateTo('about')" id="nav-about" class="nav-item hover-trigger">About</button>
+        </nav>
+    </div>
+
+    <!-- Logo -->
+    <div class="fixed top-6 left-6 md:left-10 z-50">
+        <a onclick="navigateTo('home')" class="font-display font-bold text-xl tracking-tight text-text hover-trigger cursor-pointer bg-white/70 backdrop-blur-md px-4 py-2 rounded-full border border-black/5 shadow-sm">FRANK.</a>
+    </div>
+
+    <!-- ================= PAGE: HOME ================= -->
+    <main id="home" class="page-section active min-h-screen">
+        <!-- Hero Section -->
+        <header class="relative min-h-screen flex items-end overflow-hidden">
+            <video id="hero-video" class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline preload="none" poster="assets/hero_poster.jpg">
+                <source data-src="assets/video_port.mp4" type="video/mp4">
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/40"></div>
+
+            <div class="relative z-10 w-full px-6 md:px-10 pt-40 pb-14 md:pb-20">
+                <h1 class="font-display text-6xl md:text-8xl lg:text-9xl font-bold text-white leading-[0.95] hover-trigger">
+                    Hi, I'm Frank.
+                </h1>
+                <p class="mt-6 md:mt-8 font-mono text-[11px] md:text-xs text-white/70 tracking-[0.25em] uppercase">
+                    Motion Designer. 3D Artist.
+                </p>
+            </div>
+        </header>
+
+        <!-- Selected Work Preview -->
+        <section class="py-24 px-6 md:px-10 max-w-[1600px] mx-auto">
+            <div class="flex items-center gap-6 mb-12">
+                <h2 class="font-display text-3xl md:text-4xl font-bold">SELECTED WORK</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+                <button onclick="navigateTo('work')" class="text-sm font-bold uppercase tracking-widest text-muted hover:text-accent transition-colors hover-trigger whitespace-nowrap">View All &rarr;</button>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+
+                <!-- Project 1: Motion Design (real project) -->
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-[16/10] rounded-3xl overflow-hidden bg-stone-200" onclick="openProject('project-carril')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/carril/cover.webp" alt="Carril Intro Video" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">Motion Design</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white">Carril Intro Video</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2: Jack and Jill -->
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-[16/10] rounded-3xl overflow-hidden bg-stone-900" onclick="window.open('https://www.behance.net/gallery/225900755/Jack-and-Jill', '_blank')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/characters/character.jpg" alt="Jack and Jill" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">Character Creation</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white">Jack and Jill</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3: Flux -->
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-[16/10] rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('project-flux')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/flux/flux_logoo_issh.jpeg" alt="Flux" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">In-house &bull; Fintech</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white">Flux</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 4: Xoot -->
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-[16/10] rounded-3xl overflow-hidden bg-stone-200" onclick="openProject('project-xoot')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/xoot/Xoot.png" alt="Xoot" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">Personal Project</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white">Xoot</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- AMA SECTION (NEW) -->
+        <section class="py-24 px-6 md:px-10 max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 mb-12">
+            
+            <!-- Left: AMA Questions -->
+            <div class="w-full md:w-1/2 space-y-6">
+                <h2 class="font-display text-3xl md:text-4xl font-bold text-text mb-6">AMA <span class="text-muted font-light text-xl md:text-2xl">(Ask me anything).</span></h2>
+                
+                <div id="ama-list" class="space-y-3 relative">
+                    <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left" data-answer="I'm a 3D artist focused on building characters, props, environments, and motion pieces. I like taking an idea from a rough concept and turning it into a polished 3D asset with strong form, materials, lighting, and presentation.">
+                        <span class="font-medium text-base">What's your story?</span>
+                        <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
+                    </button>
+                    
+                    <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left relative" data-answer="Outside of work, I'm usually experimenting in Blender, testing new workflows, or messing around with a new idea just to see how far I can push it.">
+                        <span class="font-medium text-base">What do you do outside of work?</span>
+                        <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
+                        <!-- Cute floating heart -->
+                        <svg class="absolute -right-3 -top-3 w-6 h-6 text-pink-400 animate-float fill-current drop-shadow-sm" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </button>
+                    
+                    <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left" data-answer="I'm best at turning ideas into finished 3D work — modeling, materials, lighting, rendering, and the little details that make an asset feel properly finished.">
+                        <span class="font-medium text-base">What are you best at?</span>
+                        <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
+                    </button>
+                    
+                    <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left relative" data-answer="I think about design through form, function, and visual storytelling. For 3D, that means making sure the model reads well, the details support the idea, and every camera angle feels intentional.">
+                        <!-- Cute floating star -->
+                        <svg class="absolute -left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-yellow-400 animate-float-delayed fill-current drop-shadow-sm" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <span class="font-medium text-base">How do you think about design?</span>
+                        <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right: Profile Card -->
+            <div class="w-full md:w-1/2 flex justify-center relative">
+                <!-- Background glow -->
+                <div class="absolute inset-0 bg-gradient-to-tr from-accent/20 via-purple-400/20 to-blue-400/20 rounded-[3rem] blur-2xl transform scale-90 animate-pulse"></div>
+                
+                <div class="relative w-full max-w-[320px] bg-white rounded-[2rem] p-2 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/50 animate-float hover-trigger">
+                    <div class="w-full aspect-[3/4] rounded-[1.5rem] overflow-hidden relative bg-stone-100">
+                        <img id="frank-portrait" src="assets/frank-open.png" alt="Frank Portrait" class="w-full h-full object-cover opacity-90">
+                        
+                        <!-- Card Overlay Info -->
+                        <div class="absolute bottom-0 left-0 w-full p-5 bg-gradient-to-t from-black/60 to-transparent text-white">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h3 class="font-display text-2xl font-bold">Frank</h3>
+                                <svg class="w-4 h-4 text-blue-400 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                            </div>
+                            <p class="text-xs text-white/80 font-medium mb-3">Motion Designer & 3D Artist</p>
+                            
+                            <div class="flex items-center gap-4 text-[10px] font-medium text-white/70">
+                                <div class="flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                    <span>198</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                    <span>754</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Floating decorative elements -->
+                <div class="absolute -right-2 top-1/4 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white shadow-lg animate-float-delayed hover-trigger">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= PAGE: WORK (CATEGORIES) ================= -->
+    <main id="work" class="page-section min-h-screen pt-32 px-6 md:px-10 bg-surface/30">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-6 mb-16 mt-10">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">Some of my work</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 auto-rows-[170px] sm:auto-rows-[200px] lg:auto-rows-[230px] grid-flow-row-dense">
+
+                <!-- Category 5: Flux (big banner) -->
+                <article id="cat-flux" class="group hover-trigger tilt-card-wrapper cursor-pointer relative col-span-2 lg:col-span-4 row-span-2 rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('project-flux')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/flux/flux_logoo_issh.jpeg" alt="Flux" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-10 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">In-house &bull; Fintech</span>
+                                <h3 class="font-display text-3xl md:text-5xl font-bold text-white">Flux</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Category 1: Motion Design (wide feature tile) -->
+                <article id="cat-motion" class="group hover-trigger tilt-card-wrapper cursor-pointer relative col-span-2 row-span-2 rounded-3xl overflow-hidden bg-stone-200" onclick="openProject('work-motion')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/carril/driving-away.webp" alt="Motion Design" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">Motion Design</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white">Motion Design</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Category 2: Character Creation (square tile) -->
+                <article id="cat-character" class="group hover-trigger tilt-card-wrapper cursor-pointer relative col-span-1 row-span-2 rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('work-character')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/characters/character.jpg" alt="Character Creation" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">Character Creation</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white">3D Character Creation</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Category 3: Hard Surface (square tile) -->
+                <article id="cat-hardsurface" class="group hover-trigger tilt-card-wrapper cursor-pointer relative col-span-1 row-span-2 rounded-3xl overflow-hidden bg-stone-200" onclick="openProject('work-hardsurface')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/xoot/Xoot.png" alt="Hard Surface" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">Hard Surface</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white">Hard Surface Modelling</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Category 4: Game Art -->
+                <article id="cat-game-art" class="group hover-trigger tilt-card-wrapper cursor-pointer relative col-span-2 lg:col-span-4 row-span-1 rounded-3xl overflow-hidden bg-stone-900 flex items-center justify-center" onclick="openProject('work-game-art')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative flex items-center justify-center p-8">
+                            <div class="text-center">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Game Art</span>
+                                <h3 class="font-display text-2xl md:text-3xl font-bold text-white mt-2">Game Art</h3>
+                                <p class="text-xs text-white/60 mt-2 uppercase tracking-widest">Games &bull; Asset Creation &bull; Character Creation</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Category 5: VFX (small banner) -->
+                <article id="cat-vfx" class="group hover-trigger tilt-card-wrapper cursor-pointer relative col-span-2 lg:col-span-4 row-span-1 rounded-3xl overflow-hidden bg-stone-200 flex items-center justify-center" onclick="alert('VFX gallery coming soon!')">
+                    <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">VFX &bull; Coming Soon</span>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= PAGE: WORK - GAME ART ================= -->
+    <main id="work-game-art" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-7xl mx-auto">
+            <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke="currentColor" stroke-width="2"></path></svg>
+                Back to Work
+            </button>
+
+            <div class="flex items-center gap-6 mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">GAME ART</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('game-go-north')">
+                    <div class="tilt-card">
+                        <div class="tilt-content relative">
+                            <img src="assets/Go north.jpg" alt="Go North" class="block w-full h-auto transition-transform duration-700 group-hover:scale-[1.02]">
+                            <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/85 via-black/30 to-transparent">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Game Art</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white mt-1">Go North</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('game-tossdown')">
+                    <div class="tilt-card">
+                        <div class="tilt-content relative">
+                            <img src="Tossdown.jpg" alt="Tossdown" class="block w-full h-auto transition-transform duration-700 group-hover:scale-[1.02]">
+                            <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/85 via-black/30 to-transparent">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Game Art</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white mt-1">Tossdown</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= PAGE: GAME - GO NORTH ================= -->
+    <main id="game-go-north" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-7xl mx-auto">
+            <button onclick="openProject('work-game-art')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke="currentColor" stroke-width="2"></path></svg>
+                Back to Games
+            </button>
+
+            <div class="relative rounded-3xl overflow-hidden bg-stone-900 mb-16">
+                <img src="assets/Go north.jpg" alt="Go North cover" class="block w-full h-auto">
+            </div>
+
+            <div class="flex items-center gap-6 mb-12">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">GO NORTH</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+
+            <section class="mb-20">
+                <div class="grid md:grid-cols-2 gap-10 border-y border-stone-300 py-8">
+                    <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Company / Studio</span><p class="text-lg font-medium mt-2">TBD</p></div>
+                    <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Role</span><p class="text-lg font-medium mt-2">3D Artist / Game Artist</p></div>
+                    <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Project Type</span><p class="text-lg font-medium mt-2">Game Art</p></div>
+                    <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Status</span><p class="text-lg font-medium mt-2">TBD</p></div>
+                </div>
+                <div class="grid md:grid-cols-12 gap-8 mt-12">
+                    <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Brief</span><h3 class="font-display text-3xl font-bold mt-2">The Project</h3></div>
+                    <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">A game art project focused on developing 3D assets and visual elements for Go North. Project details and creative direction can be expanded here.</p></div>
+                </div>
+                <div class="grid md:grid-cols-12 gap-8 mt-10">
+                    <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">My Contribution</span><h3 class="font-display text-3xl font-bold mt-2">What I Did</h3></div>
+                    <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">3D asset creation, modeling, look development, and preparing game-ready visual assets.</p></div>
+                </div>
+                <div class="grid md:grid-cols-12 gap-8 mt-10">
+                    <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Tools</span><h3 class="font-display text-3xl font-bold mt-2">Pipeline</h3></div>
+                    <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">Blender &bull; Substance Painter &bull; ZBrush</p></div>
+                </div>
+            </section>
+
+            <section class="mb-20">
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">01</span>
+                        <h3 class="font-display text-3xl font-bold mt-2">Asset Creation</h3>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">Game assets, props and visual development.</p>
+                    </div>
+                </div>
+                <div id="go-north-assets-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <!-- Existing multi-view game assets -->
+                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
+                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Catbag/front.png','image')"><img src="assets/Catbag/front.png" alt="Catbag front view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Catbag/quarter.png','image')"><img src="assets/Catbag/quarter.png" alt="Catbag quarter view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
+                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Catbag/back.png','image')"><img src="assets/Catbag/back.png" alt="Catbag back view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
+                        </div>
+                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Catbag</h4><p class="text-xs text-muted mt-1">Front &bull; Quarter &bull; Back</p></div>
+                    </article>
+                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
+                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Clown hat/Front.png','image')"><img src="assets/Clown hat/Front.png" alt="Clown hat front view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Clown hat/quarter.png','image')"><img src="assets/Clown hat/quarter.png" alt="Clown hat quarter view" class="w-full h-full object-cover"></div>
+                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Clown hat/back.png','image')"><img src="assets/Clown hat/back.png" alt="Clown hat back view" class="w-full h-full object-cover"></div>
+                        </div>
+                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Clown Hat</h4><p class="text-xs text-muted mt-1">Front &bull; Quarter &bull; Back</p></div>
+                    </article>
+                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
+                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/front.png','image')"><img src="assets/Lady bug bag/front.png" alt="Lady bug bag front view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/quarter.png','image')"><img src="assets/Lady bug bag/quarter.png" alt="Lady bug bag quarter view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/back quarter.png','image')"><img src="assets/Lady bug bag/back quarter.png" alt="Lady bug bag back quarter view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/back.png','image')"><img src="assets/Lady bug bag/back.png" alt="Lady bug bag back view" class="w-full h-full object-cover"></div>
+                        </div>
+                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Lady Bug Bag</h4><p class="text-xs text-muted mt-1">Front &bull; Quarter &bull; Back</p></div>
+                    </article>
+                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
+                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie.png','image')"><img src="assets/Dog_hoodie.png" alt="Dog hoodie front view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie 3 quarter.png','image')"><img src="assets/Dog_hoodie 3 quarter.png" alt="Dog hoodie three quarter view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie side.png','image')"><img src="assets/Dog_hoodie side.png" alt="Dog hoodie side view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie back.png','image')"><img src="assets/Dog_hoodie back.png" alt="Dog hoodie back view" class="w-full h-full object-cover"></div>
+                        </div>
+                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Dog Hoodie</h4><p class="text-xs text-muted mt-1">Front &bull; 3/4 &bull; Side &bull; Back</p></div>
+                    </article>
+                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
+                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Frog/Front.png','image')"><img src="assets/Frog/Front.png" alt="Frog front view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Frog/back.png','image')"><img src="assets/Frog/back.png" alt="Frog back view" class="w-full h-full object-cover"></div>
+                        </div>
+                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Frog</h4><p class="text-xs text-muted mt-1">Front &bull; Back</p></div>
+                    </article>
+                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
+                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Cowboy/Front.png','image')"><img src="assets/Cowboy/Front.png" alt="Cowboy front view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Cowboy/back.png','image')"><img src="assets/Cowboy/back.png" alt="Cowboy back view" class="w-full h-full object-cover"></div>
+                        </div>
+                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Cowboy</h4><p class="text-xs text-muted mt-1">Front &bull; Back</p></div>
+                    </article>
+                </div>
+            </section>
+
+            <div class="mt-24 pt-10 border-t border-stone-300 flex items-center justify-between">
+                <button onclick="openProject('work-game-art')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors">← Back to Games</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= PAGE: GAME - TOSSDOWN ================= -->
+    <main id="game-tossdown" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-7xl mx-auto">
+            <button onclick="openProject('work-game-art')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">← Back to Games</button>
+            <div class="relative rounded-3xl overflow-hidden bg-stone-900 mb-16">
+                <img src="Tossdown.jpg" alt="Tossdown cover" class="block w-full h-auto">
+            </div>
+            <div class="flex items-center gap-6 mb-12">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">TOSSDOWN</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+            <section class="mb-20">
+                <div class="grid md:grid-cols-2 gap-10 border-y border-stone-300 py-8">
+                    <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Company / Studio</span><p class="text-lg font-medium mt-2">TBD</p></div>
+                    <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Role</span><p class="text-lg font-medium mt-2">3D Artist / Game Artist</p></div>
+                    <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Project Type</span><p class="text-lg font-medium mt-2">Game Art</p></div>
+                    <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Status</span><p class="text-lg font-medium mt-2">TBD</p></div>
+                </div>
+                <div class="grid md:grid-cols-12 gap-8 mt-12">
+                    <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Brief</span><h3 class="font-display text-3xl font-bold mt-2">The Project</h3></div>
+                    <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">A game art project focused on creating visual assets for Tossdown. Project details and creative direction can be expanded here.</p></div>
+                </div>
+                <div class="grid md:grid-cols-12 gap-8 mt-10">
+                    <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">My Contribution</span><h3 class="font-display text-3xl font-bold mt-2">What I Did</h3></div>
+                    <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">3D asset creation, modeling, look development, and preparing game-ready visual assets.</p></div>
+                </div>
+                <div class="grid md:grid-cols-12 gap-8 mt-10">
+                    <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Tools</span><h3 class="font-display text-3xl font-bold mt-2">Pipeline</h3></div>
+                    <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">Blender &bull; Substance Painter &bull; ZBrush</p></div>
+                </div>
+            </section>
+            <div class="py-16 border border-stone-200 rounded-2xl bg-white text-center">
+                <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Coming Soon</span>
+                <p class="text-lg text-muted mt-3">Game assets will be added here as you upload them.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= PAGE: WORK - MOTION DESIGN (PROJECT LIST) ================= -->
+    <main id="work-motion" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-7xl mx-auto">
+
+            <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                Back to Work
+            </button>
+
+            <div class="flex items-center gap-6 mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">MOTION DESIGN</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+
+            <div class="columns-1 md:columns-2 gap-8" style="column-gap: 2rem;">
+
+                <!-- Project 1: Carril Intro Video (internal case study) -->
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-[4/5] rounded-3xl overflow-hidden bg-stone-200 mb-8 break-inside-avoid" onclick="openProject('project-carril')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/carril/cover.webp" alt="Carril Intro Video" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">Carril Agency</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white">Carril Intro Video</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 1b: What if: Nike headset (internal case study) -->
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-square rounded-3xl overflow-hidden bg-stone-200 mb-8 break-inside-avoid" onclick="openProject('project-nike-headset')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/nike-headset/Animation_Test_Scene_30003.png" alt="What if: Nike headset" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">Personal Project</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white">What if: Nike headset</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2: Oraimo SpacePods x BurnaBoy (links to Behance) -->
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-video rounded-3xl overflow-hidden bg-stone-200 mb-8 break-inside-avoid" onclick="window.open('https://www.behance.net/gallery/208620177/Oraimo-SpacePods-x-BurnaBoy', '_blank')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/oraimo-spacepods/oraimo-spacepods.jpg" alt="Oraimo SpacePods x Burna Boy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">On Behance</span>
+                                <div class="flex justify-between items-end">
+                                    <h3 class="font-display text-xl md:text-2xl font-bold text-white">Oraimo SpacePods x Burna Boy</h3>
+                                    <span class="text-white/50 text-xs font-mono">View</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3: Partners DAO / Randoms (links to Behance) -->
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-square rounded-3xl overflow-hidden bg-stone-200 mb-8 break-inside-avoid" onclick="window.open('https://www.behance.net/gallery/158502539/Randoms', '_blank')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/partners-dao/DAO_flower.jpg" alt="Partners DAO" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">On Behance</span>
+                                <div class="flex justify-between items-end">
+                                    <h3 class="font-display text-xl md:text-2xl font-bold text-white">Partners DAO</h3>
+                                    <span class="text-white/50 text-xs font-mono">View</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 4: Evolution Land - New Drills Ad (links to Behance) -->
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-video rounded-3xl overflow-hidden bg-stone-200 mb-8 break-inside-avoid" onclick="window.open('https://www.behance.net/gallery/110041397/Evolution-Land-New-Drills-Ad', '_blank')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/evolution-land/evolution-land-boxes.jpg" alt="Evolution Land â New Drills Ad" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">On Behance</span>
+                                <div class="flex justify-between items-end">
+                                    <h3 class="font-display text-xl md:text-2xl font-bold text-white">Evolution Land &mdash; New Drills Ad</h3>
+                                    <span class="text-white/50 text-xs font-mono">View</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 5: Carril Shape Explorations (links to Behance) -->
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-square rounded-3xl overflow-hidden bg-stone-200 mb-8 break-inside-avoid" onclick="window.open('https://www.behance.net/gallery/159897953/Carril-Shape-Explorations', '_blank')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/carril-shape-exp/carril-shape-explorations.jpg" alt="Carril Shape Explorations" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">On Behance</span>
+                                <div class="flex justify-between items-end">
+                                    <h3 class="font-display text-xl md:text-2xl font-bold text-white">Carril Shape Explorations</h3>
+                                    <span class="text-white/50 text-xs font-mono">View</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= PAGE: WORK - CHARACTER CREATION (PROJECT LIST) ================= -->
+    <main id="work-character" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-7xl mx-auto">
+
+            <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                Back to Work
+            </button>
+
+            <div class="flex items-center gap-6 mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">CHARACTER CREATION</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+
+            <div class="columns-1 md:columns-2 gap-8" style="column-gap: 2rem;">
+
+                <!-- Project: Jack and Jill (links to Behance) -->
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-[4/5] rounded-3xl overflow-hidden bg-stone-200 mb-8 break-inside-avoid" onclick="window.open('https://www.behance.net/gallery/225900755/Jack-and-Jill', '_blank')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/characters/character.jpg" alt="Jack and Jill" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </div>
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">On Behance</span>
+                                <div class="flex justify-between items-end">
+                                    <h3 class="font-display text-xl md:text-2xl font-bold text-white">Jack and Jill</h3>
+                                    <span class="text-white/50 text-xs font-mono">View</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= PAGE: WORK - HARD SURFACE (PROJECT LIST) ================= -->
+    <main id="work-hardsurface" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-7xl mx-auto">
+
+            <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                Back to Work
+            </button>
+
+            <div class="flex items-center gap-6 mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">HARD SURFACE</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+
+            <div class="columns-1 md:columns-2 gap-8" style="column-gap: 2rem;">
+
+                <!-- Project: Xoot (internal case study) -->
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-[4/5] rounded-3xl overflow-hidden bg-stone-200 mb-8 break-inside-avoid" onclick="openProject('project-xoot')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/xoot/Xoot.png" alt="Xoot" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest mb-1 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 delay-75">Personal Project</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white">Xoot</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= PAGE: PROJECT - XOOT ================= -->
+    <main id="project-xoot" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-5xl mx-auto">
+
+            <button onclick="openProject('work-hardsurface')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                Back to Hard Surface
+            </button>
+
+            <span class="text-accent text-xs font-bold uppercase tracking-widest mb-4 block">Personal Project &bull; Hard Surface</span>
+            <h1 class="font-display text-5xl md:text-7xl font-bold leading-[0.95] mb-10 hover-trigger">Xoot</h1>
+
+            <div class="aspect-video w-full rounded-3xl overflow-hidden bg-stone-200 mb-24">
+                <img src="assets/xoot/Xoot.png" alt="Xoot ergonomic monitor arm" class="w-full h-full object-cover">
+            </div>
+
+            <!-- 01 Brief -->
+            <section class="grid md:grid-cols-12 gap-8 mb-24">
+                <div class="md:col-span-4">
+                    <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">01</span>
+                    <h2 class="font-display text-3xl font-bold mt-2">Brief</h2>
+                </div>
+                <div class="md:col-span-8">
+                    <p class="text-lg text-muted leading-relaxed">Xoot was just some experiment &mdash; a self-directed exploration into an ergonomic solution for on-screen tablets. It's an articulating monitor arm designed to hold a screen at whatever angle actually feels comfortable, instead of forcing you into one fixed position. No brief, no client &mdash; just an excuse to push hard-surface modelling and mechanical detailing further.</p>
+                </div>
+            </section>
+
+            <!-- 02 Renders -->
+            <section>
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">02</span>
+                        <h2 class="font-display text-3xl font-bold mt-2">Renders</h2>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">Close-up studies of the hinge, joint, and tilt mechanism.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/xoot/xoot-02.webp','image')"><img src="assets/xoot/xoot-02.webp" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"></div>
+                    <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/xoot/xoot-04.webp','image')"><img src="assets/xoot/xoot-04.webp" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"></div>
+                    <div class="sm:col-span-2 aspect-video rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/xoot/xoot-01.webp','image')"><img src="assets/xoot/xoot-01.webp" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"></div>
+                </div>
+            </section>
+
+            <div class="mt-24 pt-10 border-t border-stone-300 flex items-center justify-between">
+                <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                    Back to Works
+                </button>
+                <button onclick="openProject('project-carril')" class="hover-trigger text-right group">
+                    <span class="block text-xs font-bold uppercase tracking-widest text-muted group-hover:text-accent transition-colors mb-1">Next Project</span>
+                    <span class="font-display text-xl md:text-2xl font-bold flex items-center gap-2 justify-end">
+                        Carril Intro Video
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                    </span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ================= PAGE: PROJECT - CARRIL INTRO VIDEO ================= -->
+    <main id="project-carril" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-5xl mx-auto">
+
+            <button onclick="openProject('work-motion')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                Back to Motion Design
+            </button>
+
+            <span class="text-accent text-xs font-bold uppercase tracking-widest mb-4 block">Motion Design</span>
+            <h1 class="font-display text-5xl md:text-7xl font-bold leading-[0.95] mb-10 hover-trigger">Carril Intro Video</h1>
+
+            <div class="aspect-video w-full rounded-3xl overflow-hidden bg-stone-200 mb-24">
+                <img src="assets/carril/cover.webp" alt="Carril Intro Video cover" class="w-full h-full object-cover">
+            </div>
+
+            <!-- 01 Brief -->
+            <section class="grid md:grid-cols-12 gap-8 mb-24">
+                <div class="md:col-span-4">
+                    <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">01</span>
+                    <h2 class="font-display text-3xl font-bold mt-2">Brief</h2>
+                </div>
+                <div class="md:col-span-8">
+                    <p class="text-lg text-muted leading-relaxed">Carril Agency came to us wanting a short film that felt like the start of every road trip: one small car, one big open sky, and that first stretch of highway where anything feels possible. The brief was simple: make it warm, make it a little funny, and make people want to get in the car.</p>
+                </div>
+            </section>
+
+            <!-- 02 Concept -->
+            <section class="mb-24">
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">02</span>
+                        <h2 class="font-display text-3xl font-bold mt-2">Concept</h2>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">Before touching final renders, we locked the world down on paper: storyboarding the beats, sketching the car's personality through its stickers and plates, and building out the "Carril" brand world that would ride along with it.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="col-span-2 aspect-[4/3] rounded-2xl overflow-hidden bg-stone-100"><img src="assets/carril/storyboard.webp" alt="Storyboard" class="w-full h-full object-cover"></div>
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-900"><img src="assets/carril/stickers-01.webp" alt="Sticker sheet" class="w-full h-full object-cover"></div>
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-900"><img src="assets/carril/stickers-02.webp" alt="Sticker sheet" class="w-full h-full object-cover"></div>
+                    <div class="col-span-2 md:col-span-3 aspect-[3/1] rounded-2xl overflow-hidden bg-stone-900"><img src="assets/carril/stickers-03.webp" alt="Sticker sheet" class="w-full h-full object-cover"></div>
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-100"><img src="assets/carril/license-plate.webp" alt="License plate design" class="w-full h-full object-cover"></div>
+                </div>
+            </section>
+
+            <!-- 03 Work Bench Renders -->
+            <section class="mb-24">
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">03</span>
+                        <h2 class="font-display text-3xl font-bold mt-2">Work Bench Renders</h2>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">Early clay-shaded turntables let us check the car's proportions, camera moves, and timing before any lighting or colour was locked in.</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="aspect-video rounded-2xl overflow-hidden bg-stone-300"><img src="assets/carril/loop-01.gif" alt="Work bench render loop 1" class="w-full h-full object-cover"></div>
+                    <div class="aspect-video rounded-2xl overflow-hidden bg-stone-300"><img src="assets/carril/loop-02.gif" alt="Work bench render loop 2" class="w-full h-full object-cover"></div>
+                </div>
+            </section>
+
+            <!-- 04 Styleframes -->
+            <section class="mb-24">
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">04</span>
+                        <h2 class="font-display text-3xl font-bold mt-2">Styleframes</h2>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">With the world and the car locked, we pushed single frames to final quality to define the lighting, colour, and mood before animating the full sequence.</p>
+                    </div>
+                </div>
+                <div class="columns-1 sm:columns-2 md:columns-3 gap-4" style="column-gap: 1rem;">
+                    <div class="mb-4 break-inside-avoid aspect-[3/4] rounded-2xl overflow-hidden bg-stone-100"><img src="assets/carril/car-front-detail.webp" alt="Car front detail" class="w-full h-full object-cover"></div>
+                    <div class="mb-4 break-inside-avoid aspect-video rounded-2xl overflow-hidden bg-stone-100"><img src="assets/carril/driving-away.webp" alt="Driving away" class="w-full h-full object-cover"></div>
+                    <div class="mb-4 break-inside-avoid aspect-square rounded-2xl overflow-hidden bg-stone-100"><img src="assets/carril/hill-scene.webp" alt="Hill scene" class="w-full h-full object-cover"></div>
+                    <div class="mb-4 break-inside-avoid aspect-video rounded-2xl overflow-hidden bg-stone-100"><img src="assets/carril/wide-establishing.webp" alt="Wide establishing shot" class="w-full h-full object-cover"></div>
+                    <div class="mb-4 break-inside-avoid aspect-[3/4] rounded-2xl overflow-hidden bg-stone-100"><img src="assets/carril/rear-closeup.webp" alt="Rear closeup" class="w-full h-full object-cover"></div>
+                    <div class="mb-4 break-inside-avoid aspect-square rounded-2xl overflow-hidden bg-stone-100"><img src="assets/carril/car-back-detail.webp" alt="Car back detail" class="w-full h-full object-cover"></div>
+                    <div class="mb-4 break-inside-avoid aspect-video rounded-2xl overflow-hidden bg-stone-100"><img src="assets/carril/arm-window.webp" alt="Arm out the window" class="w-full h-full object-cover"></div>
+                    <div class="mb-4 break-inside-avoid aspect-[3/4] rounded-2xl overflow-hidden bg-stone-100"><img src="assets/carril/sky-01.webp" alt="Sky study" class="w-full h-full object-cover"></div>
+                    <div class="mb-4 break-inside-avoid aspect-video rounded-2xl overflow-hidden bg-stone-100"><img src="assets/carril/sky-panorama.webp" alt="Sky panorama" class="w-full h-full object-cover"></div>
+                </div>
+            </section>
+
+            <!-- 05 Full Video -->
+            <section>
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">05</span>
+                        <h2 class="font-display text-3xl font-bold mt-2">Full Video</h2>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">The finished film, brief to final grade.</p>
+                    </div>
+                </div>
+                <div class="aspect-video w-full rounded-3xl overflow-hidden bg-black">
+                    <video class="w-full h-full object-cover" controls playsinline poster="assets/carril/main-video-poster.jpg">
+                        <source src="assets/carril/main-video.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </section>
+
+            <div class="mt-24 pt-10 border-t border-stone-300 flex items-center justify-between">
+                <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                    Back to Works
+                </button>
+                <button onclick="openProject('project-nike-headset')" class="hover-trigger text-right group">
+                    <span class="block text-xs font-bold uppercase tracking-widest text-muted group-hover:text-accent transition-colors mb-1">Next Project</span>
+                    <span class="font-display text-xl md:text-2xl font-bold flex items-center gap-2 justify-end">
+                        What if: Nike headset
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                    </span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ================= PAGE: PROJECT - WHAT IF: NIKE HEADSET ================= -->
+    <main id="project-nike-headset" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-5xl mx-auto">
+
+            <button onclick="openProject('work-motion')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                Back to Motion Design
+            </button>
+
+            <span class="text-accent text-xs font-bold uppercase tracking-widest mb-4 block">Personal Project</span>
+            <h1 class="font-display text-5xl md:text-7xl font-bold leading-[0.95] mb-10 hover-trigger">What if: Nike headset</h1>
+
+            <div class="aspect-video w-full rounded-3xl overflow-hidden bg-stone-200 mb-24">
+                <img src="assets/nike-headset/Animation_Test_Scene_30072.png" alt="Nike headset cover" class="w-full h-full object-cover">
+            </div>
+
+            <!-- 01 Concept -->
+            <section class="mb-24">
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">01</span>
+                        <h2 class="font-display text-3xl font-bold mt-2">Concept</h2>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">A personal what if: what would a pair of Nike over-ear headphones look and feel like. The idea started as a quick sketch exploring how Nike's running DNA, volt accents, mesh textures, expanding headband could translate from footwear into audio, then pushed through a couple of colourways before picking a direction to take into 3D.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-stone-100"><img src="assets/nike-headset/Carril-Nike_as_Headphones-03-03.jpg" alt="Concept sketch, volt colourway" class="w-full h-full object-cover"></div>
+                    <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-stone-100"><img src="assets/nike-headset/Carril-Product_Render-03.jpg" alt="Concept sketch, black colourway" class="w-full h-full object-cover"></div>
+                </div>
+            </section>
+
+            <!-- 02 Animation Tests removed, image moved into Styleframes -->
+
+            <!-- 02 Styleframes -->
+            <section class="mb-24">
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">02</span>
+                        <h2 class="font-display text-3xl font-bold mt-2">Styleframes</h2>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">Final beauty renders used to lock the lighting and colour grade before animating the full video.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-100"><img src="assets/nike-headset/Animation_Test_Scene_30072.png" alt="Styleframe, front view" class="w-full h-full object-cover"></div>
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-100"><img src="assets/nike-headset/Animation_Test_Scene_30003.png" alt="Styleframe, three-quarter view" class="w-full h-full object-cover"></div>
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-black"><img src="assets/nike-headset/Animation_Test_Shot_2_01_mp40182.png" alt="Styleframe, earcup detail" class="w-full h-full object-cover"></div>
+                </div>
+            </section>
+
+            <!-- 03 Full Video -->
+            <section>
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">03</span>
+                        <h2 class="font-display text-3xl font-bold mt-2">Full Video</h2>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">The finished spot, concept to final render.</p>
+                    </div>
+                </div>
+                <div class="aspect-video w-full rounded-3xl overflow-hidden bg-black">
+                    <video class="w-full h-full object-cover" controls playsinline poster="assets/nike-headset/Animation_Test_Scene_30072.png">
+                        <source src="assets/nike-headset/What_if_Nike_made_a_headset_fix.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </section>
+
+            <div class="mt-24 pt-10 border-t border-stone-300 flex items-center justify-between">
+                <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                    Back to Works
+                </button>
+                <button onclick="openProject('project-flux')" class="hover-trigger text-right group">
+                    <span class="block text-xs font-bold uppercase tracking-widest text-muted group-hover:text-accent transition-colors mb-1">Next Project</span>
+                    <span class="font-display text-xl md:text-2xl font-bold flex items-center gap-2 justify-end">
+                        Flux
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                    </span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ================= PAGE: LAB ================= -->
+    <main id="lab" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-6 mb-6">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">LAB</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+
+            <p class="max-w-2xl text-lg text-muted leading-relaxed mb-16">Basically just stuff I've been messing with lately. Tests and renders that didn't need a whole case study. No brief, no real order to it. If it exists here, it's probably because I was curious about something.</p>
+
+            <div class="columns-1 sm:columns-2 md:columns-3 gap-4" style="column-gap: 1rem;">
+
+                <div class="mb-4 break-inside-avoid aspect-[4/5] rounded-2xl overflow-hidden bg-stone-200 cursor-pointer hover-trigger" onclick="openLightbox('assets/lab/bag1.png','image')">
+                    <img src="assets/lab/bag1.png" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                </div>
+
+                <div class="mb-4 break-inside-avoid aspect-video rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/lab/turtles.mp4','video')">
+                    <video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/lab/turtles.mp4"></video>
+                </div>
+
+                <div class="mb-4 break-inside-avoid aspect-square rounded-2xl overflow-hidden bg-stone-200 cursor-pointer hover-trigger" onclick="openLightbox('assets/lab/tapfun.jpg','image')">
+                    <img src="assets/lab/tapfun.jpg" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                </div>
+
+                <div class="mb-4 break-inside-avoid aspect-video rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/lab/Car_.mp4','video')">
+                    <video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/lab/Car_.mp4"></video>
+                </div>
+
+                <div class="mb-4 break-inside-avoid aspect-video rounded-2xl overflow-hidden bg-stone-200 cursor-pointer hover-trigger" onclick="openLightbox('assets/lab/under_the_sea1.png','image')">
+                    <img src="assets/lab/under_the_sea1.png" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                </div>
+
+                <div class="mb-4 break-inside-avoid aspect-video rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/lab/Random_Cloth.mp4','video')">
+                    <video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/lab/Random_Cloth.mp4"></video>
+                </div>
+
+                <div class="mb-4 break-inside-avoid aspect-[16/9] rounded-2xl overflow-hidden bg-stone-200 cursor-pointer hover-trigger" onclick="openLightbox('assets/lab/Styleframes_of_something_I_worked_on_last_year_with__artofshindo.jpg','image')">
+                    <img src="assets/lab/Styleframes_of_something_I_worked_on_last_year_with__artofshindo.jpg" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                </div>
+
+                <div class="mb-4 break-inside-avoid aspect-video rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/lab/video_2_.mp4','video')">
+                    <video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/lab/video_2_.mp4"></video>
+                </div>
+
+                <div class="mb-4 break-inside-avoid aspect-[16/9] rounded-2xl overflow-hidden bg-stone-200 cursor-pointer hover-trigger" onclick="openLightbox('assets/lab/Styleframes_of_something_I_worked_on_last_year_with__artofshindo__1_.jpg','image')">
+                    <img src="assets/lab/Styleframes_of_something_I_worked_on_last_year_with__artofshindo__1_.jpg" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                </div>
+
+                <div class="mb-4 break-inside-avoid aspect-video rounded-2xl overflow-hidden bg-stone-200 cursor-pointer hover-trigger" onclick="openLightbox('assets/lab/car-headlight.jpg','image')">
+                    <img src="assets/lab/car-headlight.jpg" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= LIGHTBOX ================= -->
+    <div id="lightbox" class="fixed inset-0 bg-stone-50/40 backdrop-blur-2xl backdrop-saturate-150 z-[100] hidden items-center justify-center p-4 md:p-10 cursor-zoom-out" onclick="closeLightbox(event)">
+        <button onclick="closeLightbox(event)" class="hover-trigger absolute top-6 right-6 md:top-10 md:right-10 text-white/70 hover:text-white transition-colors z-10">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <div id="lightbox-content" class="max-w-full max-h-full cursor-default" onclick="event.stopPropagation()"></div>
+    </div>
+
+    <!-- ================= PAGE: PROJECT - FLUX ================= -->
+    <main id="project-flux" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-5xl mx-auto">
+
+            <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                Back to Work
+            </button>
+
+            <span class="text-accent text-xs font-bold uppercase tracking-widest mb-4 block">In-house &bull; Fintech</span>
+            <h1 class="font-display text-5xl md:text-7xl font-bold leading-[0.95] mb-10 hover-trigger">Flux</h1>
+
+            <div class="aspect-video w-full rounded-3xl overflow-hidden bg-stone-900 mb-24">
+                <img src="assets/flux/flux_logoo_issh.jpeg" alt="Flux" class="w-full h-full object-cover">
+            </div>
+
+            <!-- 01 Brief -->
+            <section class="grid md:grid-cols-12 gap-8 mb-24">
+                <div class="md:col-span-4">
+                    <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">01</span>
+                    <h2 class="font-display text-3xl font-bold mt-2">Brief</h2>
+                </div>
+                <div class="md:col-span-8">
+                    <p class="text-lg text-muted leading-relaxed">Flux is a fintech app for sending, spending, banking, and investing from one place: instant transfers across 40+ countries, virtual dollar cards for spending online, free local bank transfers, and dollar or crypto savings built in. I worked in Flux for about a year as part of the in-house design team, across motion design and icons, helping bring the product's day-to-day feel to life.</p>
+                </div>
+            </section>
+
+            <!-- 02 Motion Design -->
+            <section class="mb-24">
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">02</span>
+                        <h2 class="font-display text-3xl font-bold mt-2">Motion Design</h2>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">Short-form motion pieces made for the app and its social channels.</p>
+                    </div>
+                </div>
+                <div id="flux-motion-grid" class="columns-2 sm:columns-3 md:columns-4 gap-3" style="column-gap: 0.75rem;">
+                    <div class="mb-3 break-inside-avoid aspect-[9/16] rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/unlimited_transfers.mp4','video')"><video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/flux/unlimited_transfers.mp4"></video></div>
+                    <div class="mb-3 break-inside-avoid aspect-square rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/ball_fall.mp4','video')"><video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/flux/ball_fall.mp4"></video></div>
+                    <div class="mb-3 break-inside-avoid aspect-[3/4] rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/cards__3_.mp4','video')"><video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/flux/cards__3_.mp4"></video></div>
+                    <div class="mb-3 break-inside-avoid aspect-video rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/cart.mp4','video')"><video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/flux/cart.mp4"></video></div>
+                    <div class="mb-3 break-inside-avoid aspect-[9/16] rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/crypto.mp4','video')"><video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/flux/crypto.mp4"></video></div>
+                    <div class="mb-3 break-inside-avoid aspect-video rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/flex_redesign_exploration.mp4','video')"><video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/flux/flex_redesign_exploration.mp4"></video></div>
+                    <div class="mb-3 break-inside-avoid aspect-square rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/flux_card.mp4','video')"><video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/flux/flux_card.mp4"></video></div>
+                    <div class="mb-3 break-inside-avoid aspect-[9/16] rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/pink.mp4','video')"><video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/flux/pink.mp4"></video></div>
+                    <div class="mb-3 break-inside-avoid aspect-[3/4] rounded-2xl overflow-hidden bg-stone-900 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/React.mp4','video')"><video class="w-full h-full object-cover" autoplay muted loop playsinline src="assets/flux/React.mp4"></video></div>
+                </div>
+            </section>
+
+            <!-- 03 Icons -->
+            <section>
+                <div class="grid md:grid-cols-12 gap-8 mb-10">
+                    <div class="md:col-span-4">
+                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">03</span>
+                        <h2 class="font-display text-3xl font-bold mt-2">Icons</h2>
+                    </div>
+                    <div class="md:col-span-8">
+                        <p class="text-lg text-muted leading-relaxed">Icon sets designed for the app's product surfaces.</p>
+                    </div>
+                </div>
+                <div id="flux-icon-grid" class="grid grid-cols-3 md:grid-cols-6 gap-4">
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/send.png','image')"><img src="assets/flux/send.png" class="w-full h-full object-cover"></div>
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/blockchain_secure.png','image')"><img src="assets/flux/blockchain_secure.png" class="w-full h-full object-cover"></div>
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/safe_safe.png','image')"><img src="assets/flux/safe_safe.png" class="w-full h-full object-cover"></div>
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/safe_safe1.png','image')"><img src="assets/flux/safe_safe1.png" class="w-full h-full object-cover"></div>
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/saving.png','image')"><img src="assets/flux/saving.png" class="w-full h-full object-cover"></div>
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/cards.png','image')"><img src="assets/flux/cards.png" class="w-full h-full object-cover"></div>
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/collaboration.png','image')"><img src="assets/flux/collaboration.png" class="w-full h-full object-cover"></div>
+                    <div class="aspect-square rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/flux/collaboration2.png','image')"><img src="assets/flux/collaboration2.png" class="w-full h-full object-cover"></div>
+                </div>
+            </section>
+
+            <div class="mt-24 pt-10 border-t border-stone-300 flex items-center justify-between">
+                <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                    Back to Works
+                </button>
+                <button onclick="openProject('project-xoot')" class="hover-trigger text-right group">
+                    <span class="block text-xs font-bold uppercase tracking-widest text-muted group-hover:text-accent transition-colors mb-1">Next Project</span>
+                    <span class="font-display text-xl md:text-2xl font-bold flex items-center gap-2 justify-end">
+                        Xoot
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                    </span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ================= PAGE: ABOUT ================= -->
+    <main id="about" class="page-section min-h-screen pt-32 px-6 md:px-10">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12 mt-10">
+            <div class="md:col-span-5">
+                <div class="sticky top-32">
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">ABOUT ME</h2>
+                    <p class="text-xl text-muted leading-relaxed mb-8">
+                        I'm a multidisciplinary artist obsessed with the intersection of technology and emotion. Whether it's a hyper-realistic product render or a stylized character, I focus on making pixels feel tangible.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-2 bg-surface border border-stone-200 rounded-full text-sm font-medium text-muted">Blender</span>
+                        <span class="px-4 py-2 bg-surface border border-stone-200 rounded-full text-sm font-medium text-muted">C4D</span>
+                        <span class="px-4 py-2 bg-surface border border-stone-200 rounded-full text-sm font-medium text-muted">Houdini</span>
+                        <span class="px-4 py-2 bg-surface border border-stone-200 rounded-full text-sm font-medium text-muted">After Effects</span>
+                        <span class="px-4 py-2 bg-surface border border-stone-200 rounded-full text-sm font-medium text-muted">Unreal 5</span>
+                    </div>
+                </div>
+            </div>
+            <div class="md:col-span-7 pt-4">
+                 <div class="aspect-video bg-stone-200 rounded-2xl overflow-hidden mb-8">
+                    <img src="https://placehold.co/800x450/e7e5e4/a8a29e?text=Workspace+Setup" alt="Workspace" class="w-full h-full object-cover">
+                 </div>
+                 <p class="text-lg text-muted leading-relaxed">
+                    When I'm not pushing polygons, I'm probably experimenting with new rendering techniques. I believe the best work comes from playful curiosity and rigorous technical execution.
+                 </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="px-6 md:px-10 py-10 md:py-12 border-t border-stone-200 bg-bg">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-8">
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-text hover-trigger">Get in Touch</h2>
+
+            <div class="flex items-center gap-8 md:gap-10">
+                <a href="https://www.instagram.com/thatbored__guy/" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors hover-trigger">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg>
+                    Instagram
+                </a>
+                <a href="https://www.behance.net/akintolafr04ef" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors hover-trigger">
+                    <span class="font-display font-bold text-base leading-none">BÄ</span>
+                    Behance
+                </a>
+                <a href="mailto:akintola.frank@gmail.com" class="flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors hover-trigger">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+                    Email
+                </a>
+            </div>
+        </div>
+        <p class="max-w-7xl mx-auto mt-8 text-[10px] text-stone-400 uppercase tracking-widest">&copy; Frank. Motion &bull; 3D &bull; Experimentation</p>
+    </footer>
+
+    <script>
+        // --- 0. FRANK PORTRAIT BLINK ---
+        (function initPortraitBlink() {
+            const portrait = document.getElementById('frank-portrait');
+            if (!portrait) return;
+            const OPEN = 'assets/frank-open.png';
+            const CLOSED = 'assets/frank-closed.png';
+            function scheduleBlink() {
+                const nextBlinkIn = 2000 + Math.random() * 3500; // 2-5.5s between blinks
+                setTimeout(() => {
+                    portrait.src = CLOSED;
+                    setTimeout(() => {
+                        portrait.src = OPEN;
+                        scheduleBlink();
+                    }, 120); // eyes closed briefly
+                }, nextBlinkIn);
+            }
+            scheduleBlink();
+        })();
+
+        // --- AMA INTERACTION ---
+        (function initAMA() {
+            const list = document.getElementById('ama-list');
+            if (!list) return;
+
+            const questions = Array.from(list.querySelectorAll('button.ama-pill'));
+            let activeBubble = null;
+            let activeButton = null;
+
+            function closeBubble() {
+                if (activeBubble) {
+                    activeBubble.classList.remove('is-visible');
+                    const bubbleToRemove = activeBubble;
+                    setTimeout(() => bubbleToRemove.remove(), 350);
+                    activeBubble = null;
+                }
+                if (activeButton) {
+                    activeButton.setAttribute('aria-expanded', 'false');
+                    activeButton = null;
+                }
+            }
+
+            questions.forEach((button) => {
+                button.setAttribute('type', 'button');
+                button.setAttribute('aria-expanded', 'false');
+
+                button.addEventListener('click', () => {
+                    const isSame = activeButton === button;
+                    closeBubble();
+                    if (isSame) return;
+
+                    const bubble = document.createElement('div');
+                    bubble.className = 'ama-answer-bubble';
+                    bubble.textContent = button.dataset.answer || '';
+                    bubble.setAttribute('role', 'status');
+
+                    // Keep the bubble anchored to the clicked question without
+                    // changing the position/size of the existing question list.
+                    bubble.style.top = (button.offsetTop + button.offsetHeight - 4) + 'px';
+                    list.appendChild(bubble);
+
+                    activeBubble = bubble;
+                    activeButton = button;
+                    button.setAttribute('aria-expanded', 'true');
+
+                    requestAnimationFrame(() => bubble.classList.add('is-visible'));
+                });
+            });
+        })();
+
+        // --- 1. NAVIGATION LOGIC ---
+        const navIndicator = document.getElementById('nav-indicator');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        function updateIndicator(activeElement) {
+            if (!activeElement || !navIndicator) return;
+            const parentRect = activeElement.parentElement.getBoundingClientRect();
+            const activeRect = activeElement.getBoundingClientRect();
+            const leftPos = activeRect.left - parentRect.left;
+            navIndicator.style.width = `${activeRect.width}px`;
+            navIndicator.style.transform = `translateX(${leftPos - 4}px)`;
+        }
+
+        function navigateTo(pageId) {
+            navItems.forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`nav-${pageId}`);
+            if(activeBtn) {
+                activeBtn.classList.add('active');
+                updateIndicator(activeBtn);
+            }
+
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+                setTimeout(() => {
+                    if(!section.classList.contains('active')) section.style.display = 'none';
+                }, 600);
+            });
+
+            const target = document.getElementById(pageId);
+            if(target) {
+                target.style.display = 'block';
+                setTimeout(() => {
+                    target.classList.add('active');
+                    window.scrollTo(0, 0);
+                }, 50);
+            }
+        }
+
+        function openLightbox(src, type) {
+            const lightbox = document.getElementById('lightbox');
+            const content = document.getElementById('lightbox-content');
+            content.innerHTML = '';
+
+            if (type === 'video') {
+                const video = document.createElement('video');
+                video.src = src;
+                video.controls = true;
+                video.autoplay = true;
+                video.loop = true;
+                video.playsInline = true;
+                video.className = 'max-w-full max-h-[90vh] rounded-xl';
+                content.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.src = src;
+                img.className = 'max-w-full max-h-[90vh] rounded-xl';
+                content.appendChild(img);
+            }
+
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox(e) {
+            const lightbox = document.getElementById('lightbox');
+            const content = document.getElementById('lightbox-content');
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+            content.querySelectorAll('video').forEach(v => v.pause());
+            content.innerHTML = '';
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        function openProject(projectId) {
+            navItems.forEach(btn => btn.classList.remove('active'));
+            const workBtn = document.getElementById('nav-work');
+            if (workBtn) {
+                workBtn.classList.add('active');
+                updateIndicator(workBtn);
+            }
+
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+                setTimeout(() => {
+                    if(!section.classList.contains('active')) section.style.display = 'none';
+                }, 600);
+            });
+
+            const target = document.getElementById(projectId);
+            if(target) {
+                target.style.display = 'block';
+                setTimeout(() => {
+                    target.classList.add('active');
+                    window.scrollTo(0, 0);
+                }, 50);
+            }
+        }
+
+        function goToWorkCategory(categoryId) {
+            navigateTo('work');
+            setTimeout(() => {
+                const categoryEl = document.getElementById(`cat-${categoryId}`);
+                if(categoryEl) {
+                    categoryEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    const card = categoryEl.querySelector('.tilt-card');
+                    card.classList.add('ring-4', 'ring-accent', 'ring-offset-4');
+                    setTimeout(() => {
+                        card.classList.remove('ring-4', 'ring-accent', 'ring-offset-4');
+                    }, 2000);
+                }
+            }, 700);
+        }
+
+        window.addEventListener('load', () => {
+            const initialActive = document.querySelector('.nav-item.active');
+            if(initialActive) updateIndicator(initialActive);
+        });
+        window.addEventListener('resize', () => {
+            const currentActive = document.querySelector('.nav-item.active');
+            if(currentActive) updateIndicator(currentActive);
+        });
+
+        // --- 2. CHARACTER BLINK LOGIC ---
+        const character = document.getElementById('frank-character');
+        if(character) {
+            const imgOpen = character.querySelector('.char-eyes-open');
+            const imgClosed = character.querySelector('.char-eyes-closed');
+            let isHovering = false;
+
+            Promise.all([
+                new Promise(r => { imgOpen.onload = r; imgOpen.onerror = r; }),
+                new Promise(r => { imgClosed.onload = r; imgClosed.onerror = r; })
+            ]).then(() => { startBlinkSequence(); });
+
+            function triggerBlink() {
+                if (!character) return;
+                character.classList.add('is-blinking');
+                setTimeout(() => character.classList.remove('is-blinking'), 120);
+            }
+
+            function startBlinkSequence() {
+                const randomTime = Math.random() * 3000 + 2000;
+                setTimeout(() => {
+                    if (!isHovering) triggerBlink();
+                    startBlinkSequence();
+                }, randomTime);
+            }
+
+            character.addEventListener('mouseenter', () => { isHovering = true; triggerBlink(); });
+            character.addEventListener('mouseleave', () => { isHovering = false; });
+        }
+
+        // --- 3. CUSTOM CURSOR ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const triggers = document.querySelectorAll('.hover-trigger, a, button, input, textarea');
+
+        if (window.matchMedia("(pointer: fine)").matches) {
+            window.addEventListener('mousemove', (e) => {
+                requestAnimationFrame(() => {
+                    cursorDot.style.left = `${e.clientX}px`;
+                    cursorDot.style.top = `${e.clientY}px`;
+                    cursorOutline.style.left = `${e.clientX}px`;
+                    cursorOutline.style.top = `${e.clientY}px`;
+                });
+            });
+            triggers.forEach(t => {
+                t.addEventListener('mouseenter', () => cursorOutline.classList.add('hovered'));
+                t.addEventListener('mouseleave', () => cursorOutline.classList.remove('hovered'));
+            });
+        }
+
+        // --- 4. 3D TILT EFFECT ---
+        const tiltCards = document.querySelectorAll('.tilt-card-wrapper');
+        tiltCards.forEach(wrapper => {
+            const card = wrapper.querySelector('.tilt-card');
+            const content = wrapper.querySelector('.tilt-content');
+            
+            if(card) {
+                wrapper.addEventListener('mousemove', (e) => {
+                    const rect = wrapper.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -5; // Subtle tilt
+                    const rotateY = ((x - centerX) / centerX) * 5;
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    if(content) content.style.transform = `translateZ(20px)`;
+                });
+                wrapper.addEventListener('mouseleave', () => {
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+                    if(content) content.style.transform = `translateZ(0px)`;
+                });
+            }
+        });
+    </script>
+
+    <!-- Hero video lazy-load: fires after first paint so the page feels instant -->
+    <script>
+        (function () {
+            function loadHeroVideo() {
+                var video = document.getElementById('hero-video');
+                if (!video) return;
+                var source = video.querySelector('source[data-src]');
+                if (!source) return;
+                source.src = source.getAttribute('data-src');
+                source.removeAttribute('data-src');
+                video.load();
+                video.play().catch(function () { /* autoplay blocked  muted loop will resume on interaction */ });
+            }
+            // requestIdleCallback = load after browser is idle; fallback to 300 ms
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(loadHeroVideo, { timeout: 2000 });
+            } else {
+                window.addEventListener('load', function () {
+                    setTimeout(loadHeroVideo, 300);
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
