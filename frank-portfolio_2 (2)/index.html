@@ -469,13 +469,10 @@
             </div>
 
             <div class="grid md:grid-cols-2 gap-6">
-                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-[16/10] rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('game-go-north')">
-                    <div class="tilt-card w-full h-full">
-                        <div class="tilt-content w-full h-full relative">
-                            <div class="absolute inset-0 flex items-center justify-center bg-stone-900">
-                                <img src="assets/Go north.jpg" alt="Go North" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
-                                <span class="absolute font-display text-3xl md:text-5xl font-bold text-white tracking-tight">GO NORTH</span>
-                            </div>
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('game-go-north')">
+                    <div class="tilt-card">
+                        <div class="tilt-content relative">
+                            <img src="assets/Go north.jpg" alt="Go North" class="block w-full h-auto transition-transform duration-700 group-hover:scale-[1.02]">
                             <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/85 via-black/30 to-transparent">
                                 <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Game Art</span>
                                 <h3 class="font-display text-xl md:text-2xl font-bold text-white mt-1">Go North</h3>
@@ -484,15 +481,11 @@
                     </div>
                 </article>
 
-                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-[16/10] rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('game-tossdown')">
-                    <div class="tilt-card w-full h-full">
-                        <div class="tilt-content w-full h-full relative flex items-center justify-center">
-                            <div class="text-center">
-                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Game Art</span>
-                                <h3 class="font-display text-2xl md:text-3xl font-bold text-white mt-2">Tossdown</h3>
-                                <p class="text-xs text-white/60 mt-2 uppercase tracking-widest">Coming Soon</p>
-                            </div>
-                            <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/70 to-transparent">
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('game-tossdown')">
+                    <div class="tilt-card">
+                        <div class="tilt-content relative">
+                            <img src="Tossdown.jpg" alt="Tossdown" class="block w-full h-auto transition-transform duration-700 group-hover:scale-[1.02]">
+                            <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/85 via-black/30 to-transparent">
                                 <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Game Art</span>
                                 <h3 class="font-display text-xl md:text-2xl font-bold text-white mt-1">Tossdown</h3>
                             </div>
@@ -511,11 +504,8 @@
                 Back to Games
             </button>
 
-            <div class="relative aspect-[21/9] rounded-3xl overflow-hidden bg-stone-900 mb-16">
-                <img src="assets/Go north.jpg" alt="Go North cover" class="w-full h-full object-cover" onerror="this.style.display='none'">
-                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <h2 class="font-display text-5xl md:text-7xl font-bold text-white">GO NORTH</h2>
-                </div>
+            <div class="relative rounded-3xl overflow-hidden bg-stone-900 mb-16">
+                <img src="assets/Go north.jpg" alt="Go North cover" class="block w-full h-auto">
             </div>
 
             <div class="flex items-center gap-6 mb-12">
@@ -596,12 +586,8 @@
     <main id="game-tossdown" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
         <div class="max-w-7xl mx-auto">
             <button onclick="openProject('work-game-art')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">← Back to Games</button>
-            <div class="aspect-[21/9] rounded-3xl bg-stone-900 flex items-center justify-center mb-16">
-                <div class="text-center">
-                    <span class="text-accent text-xs font-bold uppercase tracking-widest">Game Art</span>
-                    <h2 class="font-display text-5xl md:text-7xl font-bold text-white mt-2">TOSSDOWN</h2>
-                    <p class="text-white/50 text-xs uppercase tracking-widest mt-4">Assets coming soon</p>
-                </div>
+            <div class="relative rounded-3xl overflow-hidden bg-stone-900 mb-16">
+                <img src="Tossdown.jpg" alt="Tossdown cover" class="block w-full h-auto">
             </div>
             <div class="flex items-center gap-6 mb-12">
                 <h2 class="font-display text-4xl md:text-5xl font-bold">TOSSDOWN</h2>
