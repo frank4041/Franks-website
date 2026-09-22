@@ -120,6 +120,50 @@
             transform: translateX(8px);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
+        .ama-answer-bubble {
+            position: absolute;
+            left: 64px;
+            width: min(250px, calc(100% - 64px));
+            padding: 10px 13px;
+            border-radius: 12px;
+            background: #1688F7;
+            color: #FFFFFF;
+            font-size: 10px;
+            line-height: 1.35;
+            font-weight: 500;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+            z-index: 5;
+            opacity: 0;
+            filter: blur(7px);
+            transform: translateY(8px) scale(0.97);
+            transform-origin: left top;
+            pointer-events: none;
+            transition: opacity 0.3s ease, filter 0.35s ease, transform 0.35s ease;
+        }
+        .ama-answer-bubble::after {
+            content: "";
+            position: absolute;
+            left: -6px;
+            top: 10px;
+            width: 12px;
+            height: 12px;
+            background: #1688F7;
+            transform: rotate(45deg);
+            border-radius: 2px;
+            z-index: -1;
+        }
+        .ama-answer-bubble.is-visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0) scale(1);
+        }
+        @media (max-width: 768px) {
+            .ama-answer-bubble {
+                left: 24px;
+                width: calc(100% - 24px);
+                max-width: 280px;
+            }
+        }
         .ama-answer {
             overflow: hidden;
             max-height: 240px;
@@ -261,25 +305,25 @@
             <div class="w-full md:w-1/2 space-y-6">
                 <h2 class="font-display text-3xl md:text-4xl font-bold text-text mb-6">AMA <span class="text-muted font-light text-xl md:text-2xl">(Ask me anything).</span></h2>
                 
-                <div class="space-y-3">
-                    <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left">
+                <div id="ama-list" class="space-y-3 relative">
+                    <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left" data-answer="I'm a product designer that cares about making complex systems feel more straightforward. I believe even technical products should feel simple, intuitive, and a little delightful to use.">
                         <span class="font-medium text-base">What's your story?</span>
                         <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
                     </button>
                     
-                    <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left relative">
+                    <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left relative" data-answer="I like making things, exploring new ideas, and finding little ways to turn creativity into something useful.">
                         <span class="font-medium text-base">What do you do outside of work?</span>
                         <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
                         <!-- Cute floating heart -->
                         <svg class="absolute -right-3 -top-3 w-6 h-6 text-pink-400 animate-float fill-current drop-shadow-sm" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     </button>
                     
-                    <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left">
+                    <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left" data-answer="Getting things done quickly without sacrificing quality. (It's all in the details!)">
                         <span class="font-medium text-base">What are you best at?</span>
                         <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
                     </button>
                     
-                    <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left relative">
+                    <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left relative" data-answer="Design is clear thinking made visible and is grounded in delivering people what they need.">
                         <!-- Cute floating star -->
                         <svg class="absolute -left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-yellow-400 animate-float-delayed fill-current drop-shadow-sm" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                         <span class="font-medium text-base">How do you think about design?</span>
@@ -1149,30 +1193,55 @@
             scheduleBlink();
         })();
 
-        // --- AMA ACCORDION ---
-        document.querySelectorAll('#ama-list .ama-item').forEach((item) => {
-            const button = item.querySelector('button');
-            const answer = item.querySelector('.ama-answer');
-            const icon = item.querySelector('.ama-icon');
+        // --- AMA INTERACTION ---
+        (function initAMA() {
+            const list = document.getElementById('ama-list');
+            if (!list) return;
 
-            button.addEventListener('click', () => {
-                const wasOpen = item.classList.contains('is-open');
+            const questions = Array.from(list.querySelectorAll('button.ama-pill'));
+            let activeBubble = null;
+            let activeButton = null;
 
-                document.querySelectorAll('#ama-list .ama-item').forEach((other) => {
-                    other.classList.remove('is-open');
-                    other.querySelector('button').setAttribute('aria-expanded', 'false');
-                    other.querySelector('.ama-answer').hidden = true;
-                    other.querySelector('.ama-icon').textContent = '+';
-                });
-
-                if (!wasOpen) {
-                    item.classList.add('is-open');
-                    button.setAttribute('aria-expanded', 'true');
-                    answer.hidden = false;
-                    icon.textContent = '−';
+            function closeBubble() {
+                if (activeBubble) {
+                    activeBubble.classList.remove('is-visible');
+                    const bubbleToRemove = activeBubble;
+                    setTimeout(() => bubbleToRemove.remove(), 350);
+                    activeBubble = null;
                 }
+                if (activeButton) {
+                    activeButton.setAttribute('aria-expanded', 'false');
+                    activeButton = null;
+                }
+            }
+
+            questions.forEach((button) => {
+                button.setAttribute('type', 'button');
+                button.setAttribute('aria-expanded', 'false');
+
+                button.addEventListener('click', () => {
+                    const isSame = activeButton === button;
+                    closeBubble();
+                    if (isSame) return;
+
+                    const bubble = document.createElement('div');
+                    bubble.className = 'ama-answer-bubble';
+                    bubble.textContent = button.dataset.answer || '';
+                    bubble.setAttribute('role', 'status');
+
+                    // Keep the bubble anchored to the clicked question without
+                    // changing the position/size of the existing question list.
+                    bubble.style.top = (button.offsetTop + button.offsetHeight - 4) + 'px';
+                    list.appendChild(bubble);
+
+                    activeBubble = bubble;
+                    activeButton = button;
+                    button.setAttribute('aria-expanded', 'true');
+
+                    requestAnimationFrame(() => bubble.classList.add('is-visible'));
+                });
             });
-        });
+        })();
 
         // --- 1. NAVIGATION LOGIC ---
         const navIndicator = document.getElementById('nav-indicator');
