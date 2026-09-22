@@ -182,6 +182,86 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
+
+        /* --- TOSSDOWN CASE STUDY HIERARCHY --- */
+        .tossdown-page .tossdown-hero {
+            box-shadow: 0 24px 60px -30px rgba(28,25,23,0.28);
+        }
+        .tossdown-page .tossdown-kicker {
+            color: #FF5E00;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+        }
+        .tossdown-page .tossdown-meta {
+            background: #F5F5F4;
+            border: 1px solid #E7E5E4;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+        .tossdown-page .tossdown-meta-item {
+            padding: 20px 22px;
+            border-bottom: 1px solid #E7E5E4;
+        }
+        .tossdown-page .tossdown-meta-item:nth-last-child(-n+2) { border-bottom: 0; }
+        @media (min-width: 768px) {
+            .tossdown-page .tossdown-meta-item:nth-child(odd) { border-right: 1px solid #E7E5E4; }
+            .tossdown-page .tossdown-meta-item:nth-child(3),
+            .tossdown-page .tossdown-meta-item:nth-child(4) { border-bottom: 0; }
+        }
+        .tossdown-page .tossdown-copy {
+            max-width: 760px;
+        }
+        .tossdown-page .tossdown-section-intro {
+            max-width: 680px;
+            color: #78716C;
+            line-height: 1.75;
+        }
+        .tossdown-page .tossdown-group {
+            position: relative;
+        }
+        .tossdown-page .tossdown-group + .tossdown-group {
+            margin-top: 72px;
+        }
+        .tossdown-page .tossdown-character {
+            position: relative;
+        }
+        .tossdown-page .tossdown-character > div:first-child {
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+        .tossdown-page .tossdown-character:hover > div:first-child {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 35px -24px rgba(28,25,23,0.35);
+        }
+        .tossdown-page .tossdown-character img {
+            transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+        }
+        .tossdown-page .tossdown-character:hover img {
+            transform: scale(1.015);
+        }
+        .tossdown-page .tossdown-category {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+        .tossdown-page .tossdown-category-badge {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #1C1917;
+            color: white;
+            font-family: monospace;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+        .tossdown-page .tossdown-category.enemy .tossdown-category-badge {
+            background: #E7E5E4;
+            color: #57534E;
+        }
+
         html { scroll-behavior: smooth; }
         ::selection { background: #FF5E00; color: white; }
         ::-webkit-scrollbar { width: 0px; }
@@ -604,150 +684,160 @@
     </main>
 
     <!-- ================= PAGE: GAME - TOSSDOWN ================= -->
-<main id="game-tossdown" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+<main id="game-tossdown" class="page-section tossdown-page min-h-screen pt-32 px-6 md:px-10 pb-24">
     <div class="max-w-7xl mx-auto">
         <button onclick="openProject('work-game-art')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">← Back to Games</button>
-        <div class="relative rounded-3xl overflow-hidden bg-stone-900 mb-16">
+        <div class="relative tossdown-hero rounded-3xl overflow-hidden bg-stone-900 mb-10">
             <img src="Tossdown.jpg" alt="Tossdown cover" class="block w-full h-auto">
         </div>
-        <div class="flex items-center gap-6 mb-12">
-            <h2 class="font-display text-4xl md:text-5xl font-bold">TOSSDOWN</h2>
-            <div class="h-[1px] flex-grow bg-stone-300"></div>
+        <div class="mb-14">
+            <span class="tossdown-kicker">Game Art • Character Creation</span>
+            <div class="flex items-end gap-6 mt-3">
+                <h2 class="font-display text-5xl md:text-7xl font-bold leading-none">TOSSDOWN</h2>
+                <div class="h-[1px] flex-grow bg-stone-300 mb-2"></div>
+            </div>
+            <p class="tossdown-section-intro mt-6 text-base md:text-lg">A character-driven game project currently in development. This case study focuses on the characters I created for the project, from the main cast to its enemy roster.</p>
         </div>
         <section class="mb-20">
-            <div class="grid md:grid-cols-2 gap-10 border-y border-stone-300 py-8">
-                <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Company / Studio</span><p class="text-lg font-medium mt-2">TBD</p></div>
-                <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Role</span><p class="text-lg font-medium mt-2">Character Artist</p></div>
-                <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Project Type</span><p class="text-lg font-medium mt-2">Game Art</p></div>
-                <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Status</span><p class="text-lg font-medium mt-2">In Development</p></div>
+            <div class="tossdown-meta grid md:grid-cols-2">
+                <div class="tossdown-meta-item"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Company / Studio</span><p class="text-lg font-medium mt-2">TBD</p></div>
+                <div class="tossdown-meta-item"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Role</span><p class="text-lg font-medium mt-2">Character Artist</p></div>
+                <div class="tossdown-meta-item"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Project Type</span><p class="text-lg font-medium mt-2">Game Art</p></div>
+                <div class="tossdown-meta-item"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Status</span><p class="text-lg font-medium mt-2">In Development</p></div>
             </div>
-            <div class="grid md:grid-cols-12 gap-8 mt-12">
-                <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Brief</span><h3 class="font-display text-3xl font-bold mt-2">The Project</h3></div>
-                <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">Tossdown is a game project currently in development, with a stylized character-driven art direction.</p></div>
-            </div>
-            <div class="grid md:grid-cols-12 gap-8 mt-10">
-                <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">My Contribution</span><h3 class="font-display text-3xl font-bold mt-2">Character Artist</h3></div>
-                <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">I created all of the characters currently available in the project.</p></div>
+            <div class="grid md:grid-cols-12 gap-8 mt-14">
+                <div class="md:col-span-4"><span class="tossdown-kicker">Brief</span><h3 class="font-display text-3xl font-bold mt-2">The Project</h3></div>
+                <div class="md:col-span-8 tossdown-copy"><p class="text-lg text-muted leading-relaxed">Tossdown is a game project currently in development, with a stylized character-driven art direction.</p></div>
             </div>
             <div class="grid md:grid-cols-12 gap-8 mt-10">
-                <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Tools</span><h3 class="font-display text-3xl font-bold mt-2">Pipeline</h3></div>
-                <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">Photoshop &bull; Blender &bull; Substance Painter &bull; Illustrator</p></div>
+                <div class="md:col-span-4"><span class="tossdown-kicker">My Contribution</span><h3 class="font-display text-3xl font-bold mt-2">Character Artist</h3></div>
+                <div class="md:col-span-8 tossdown-copy"><p class="text-lg text-muted leading-relaxed">I created all of the characters currently available in the project.</p></div>
+            </div>
+            <div class="grid md:grid-cols-12 gap-8 mt-10">
+                <div class="md:col-span-4"><span class="tossdown-kicker">Softwares Used</span><h3 class="font-display text-3xl font-bold mt-2">Software</h3></div>
+                <div class="md:col-span-8 tossdown-copy"><p class="text-lg text-muted leading-relaxed">Photoshop &bull; Blender &bull; Substance Painter &bull; Illustrator</p></div>
             </div>
         </section>
-        <section class="pt-4">
-            <div class="flex items-center gap-6 mb-12">
-                <h2 class="font-display text-3xl md:text-4xl font-bold">CHARACTER CREATION</h2>
-                <div class="h-[1px] flex-grow bg-stone-300"></div>
+        <section class="pt-10 border-t border-stone-300">
+            <div class="mb-14">
+                <span class="tossdown-kicker">Character Art</span>
+                <div class="flex items-center gap-6 mt-2">
+                    <h2 class="font-display text-4xl md:text-5xl font-bold">CHARACTER CREATION</h2>
+                    <div class="h-[1px] flex-grow bg-stone-300"></div>
+                </div>
+                <p class="tossdown-section-intro mt-5">The roster is split into the principal characters and the enemy cast. Each character is shown through the available presentation views.</p>
             </div>
 
-            <div class="mb-20">
-                <div class="flex items-center gap-6 mb-10">
+            <div class="tossdown-group mb-20">
+                <div class="tossdown-category">
+                    <span class="tossdown-category-badge">Core Cast</span>
                     <h3 class="font-display text-2xl md:text-3xl font-bold">Main Characters</h3>
                     <div class="h-[1px] flex-grow bg-stone-200"></div>
                 </div>
-                <div class="mb-16">
+                <div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Courier</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/CH_Courier_Camera.png','image')"><img src="assets/assets/Tossdown characters/CH_Courier_Camera.png" alt="Courier view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/CH_Courier_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/CH_Courier_Camera.001.png" alt="Courier view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/CH_Courier_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/CH_Courier_Camera.002.png" alt="Courier view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Punk</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/CH_Punk_Camera.png','image')"><img src="assets/assets/Tossdown characters/CH_Punk_Camera.png" alt="Punk view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/CH_Punk_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/CH_Punk_Camera.001.png" alt="Punk view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/CH_Punk_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/CH_Punk_Camera.002.png" alt="Punk view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Speedster</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/CH_Speedster_Camera.png','image')"><img src="assets/assets/Tossdown characters/CH_Speedster_Camera.png" alt="Speedster view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/CH_Speedster_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/CH_Speedster_Camera.001.png" alt="Speedster view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/CH_Speedster_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/CH_Speedster_Camera.002.png" alt="Speedster view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Manipulator</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Manipulator_Camera.png','image')"><img src="assets/assets/Tossdown characters/Manipulator_Camera.png" alt="Manipulator view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Manipulator_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/Manipulator_Camera.001.png" alt="Manipulator view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Manipulator_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/Manipulator_Camera.002.png" alt="Manipulator view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Medic</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Medic_Camera.png','image')"><img src="assets/assets/Tossdown characters/Medic_Camera.png" alt="Medic view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Medic_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/Medic_Camera.001.png" alt="Medic view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Medic_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/Medic_Camera.002.png" alt="Medic view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Suit</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Suit_Camera.png','image')"><img src="assets/assets/Tossdown characters/Suit_Camera.png" alt="Suit view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Suit_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/Suit_Camera.001.png" alt="Suit view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Suit_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/Suit_Camera.002.png" alt="Suit view 3" class="block w-full h-auto"></div>
     </div>
             </div>
 
-            <div class="pt-4">
-                <div class="flex items-center gap-6 mb-10">
+            <div class="tossdown-group pt-8 border-t border-stone-200">
+                <div class="tossdown-category enemy">
+                    <span class="tossdown-category-badge">Enemy Roster</span>
                     <h3 class="font-display text-2xl md:text-3xl font-bold">Enemy Characters</h3>
                     <div class="h-[1px] flex-grow bg-stone-200"></div>
                 </div>
-                <div class="mb-16">
+                <div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Bomber</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Bomber_Camera.png','image')"><img src="assets/assets/Tossdown characters/Bomber_Camera.png" alt="Bomber view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Bomber_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/Bomber_Camera.001.png" alt="Bomber view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Bomber_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/Bomber_Camera.002.png" alt="Bomber view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Enemy Bomber</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Bomber_Camera.png','image')"><img src="assets/assets/Tossdown characters/EN_Bomber_Camera.png" alt="Enemy Bomber view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Bomber_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/EN_Bomber_Camera.001.png" alt="Enemy Bomber view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Bomber_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/EN_Bomber_Camera.002.png" alt="Enemy Bomber view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Female Charger</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Charger_Female_Camera.png','image')"><img src="assets/assets/Tossdown characters/EN_Charger_Female_Camera.png" alt="Female Charger view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Charger_Female_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/EN_Charger_Female_Camera.001.png" alt="Female Charger view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Charger_Female_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/EN_Charger_Female_Camera.002.png" alt="Female Charger view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Male Charger</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Charger_Male_Camera.png','image')"><img src="assets/assets/Tossdown characters/EN_Charger_Male_Camera.png" alt="Male Charger view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Charger_Male_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/EN_Charger_Male_Camera.001.png" alt="Male Charger view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Charger_Male_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/EN_Charger_Male_Camera.002.png" alt="Male Charger view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Female Crossbow</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Crossbow_Female_Camera.png','image')"><img src="assets/assets/Tossdown characters/EN_Crossbow_Female_Camera.png" alt="Female Crossbow view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Crossbow_Female_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/EN_Crossbow_Female_Camera.001.png" alt="Female Crossbow view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Crossbow_Female_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/EN_Crossbow_Female_Camera.002.png" alt="Female Crossbow view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Male Crossbow</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Crossbow_Male_Camera.png','image')"><img src="assets/assets/Tossdown characters/EN_Crossbow_Male_Camera.png" alt="Male Crossbow view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Crossbow_Male_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/EN_Crossbow_Male_Camera.001.png" alt="Male Crossbow view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Crossbow_Male_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/EN_Crossbow_Male_Camera.002.png" alt="Male Crossbow view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Enemy Grenader</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Grenader_Camera.png','image')"><img src="assets/assets/Tossdown characters/EN_Grenader_Camera.png" alt="Enemy Grenader view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Grenader_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/EN_Grenader_Camera.001.png" alt="Enemy Grenader view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Grenader_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/EN_Grenader_Camera.002.png" alt="Enemy Grenader view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Enemy Pistol</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Pistol_Camera.png','image')"><img src="assets/assets/Tossdown characters/EN_Pistol_Camera.png" alt="Enemy Pistol view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Pistol_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/EN_Pistol_Camera.001.png" alt="Enemy Pistol view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Pistol_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/EN_Pistol_Camera.002.png" alt="Enemy Pistol view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Enemy Rifle</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Rifle_Camera.png','image')"><img src="assets/assets/Tossdown characters/EN_Rifle_Camera.png" alt="Enemy Rifle view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Rifle_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/EN_Rifle_Camera.001.png" alt="Enemy Rifle view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Rifle_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/EN_Rifle_Camera.002.png" alt="Enemy Rifle view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Enemy Shotgun</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Shotgun_Camera.png','image')"><img src="assets/assets/Tossdown characters/EN_Shotgun_Camera.png" alt="Enemy Shotgun view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Shotgun_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/EN_Shotgun_Camera.001.png" alt="Enemy Shotgun view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Shotgun_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/EN_Shotgun_Camera.002.png" alt="Enemy Shotgun view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Enemy Sniper</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Sniper_Camera.png','image')"><img src="assets/assets/Tossdown characters/EN_Sniper_Camera.png" alt="Enemy Sniper view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Sniper_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/EN_Sniper_Camera.001.png" alt="Enemy Sniper view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/EN_Sniper_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/EN_Sniper_Camera.002.png" alt="Enemy Sniper view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Grenader</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Grenader_Camera.png','image')"><img src="assets/assets/Tossdown characters/Grenader_Camera.png" alt="Grenader view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Grenader_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/Grenader_Camera.001.png" alt="Grenader view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Grenader_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/Grenader_Camera.002.png" alt="Grenader view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Rifle</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Rifle_Camera.png','image')"><img src="assets/assets/Tossdown characters/Rifle_Camera.png" alt="Rifle view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Rifle_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/Rifle_Camera.001.png" alt="Rifle view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Rifle_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/Rifle_Camera.002.png" alt="Rifle view 3" class="block w-full h-auto"></div>
     </div>
-<div class="mb-16">
+<div class="tossdown-character mb-16">
     <div class="flex items-center gap-6 mb-6"><h3 class="font-display text-2xl md:text-3xl font-bold">Shotgun</h3><div class="h-[1px] flex-grow bg-stone-200"></div></div>
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Shotgun_Camera.png','image')"><img src="assets/assets/Tossdown characters/Shotgun_Camera.png" alt="Shotgun view 1" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Shotgun_Camera.001.png','image')"><img src="assets/assets/Tossdown characters/Shotgun_Camera.001.png" alt="Shotgun view 2" class="block w-full h-auto"></div><div class="rounded-2xl overflow-hidden bg-stone-100 cursor-pointer hover-trigger" onclick="openLightbox('assets/assets/Tossdown characters/Shotgun_Camera.002.png','image')"><img src="assets/assets/Tossdown characters/Shotgun_Camera.002.png" alt="Shotgun view 3" class="block w-full h-auto"></div>
