@@ -441,7 +441,7 @@
                             <div class="text-center">
                                 <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Game Art</span>
                                 <h3 class="font-display text-2xl md:text-3xl font-bold text-white mt-2">Game Art</h3>
-                                <p class="text-xs text-white/60 mt-2 uppercase tracking-widest">Asset Creation &bull; Character Creation</p>
+                                <p class="text-xs text-white/60 mt-2 uppercase tracking-widest">Games &bull; Asset Creation &bull; Character Creation</p>
                             </div>
                         </div>
                     </div>
@@ -459,12 +459,67 @@
     <main id="work-game-art" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
         <div class="max-w-7xl mx-auto">
             <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke="currentColor" stroke-width="2"></path></svg>
                 Back to Work
             </button>
 
             <div class="flex items-center gap-6 mb-16">
                 <h2 class="font-display text-4xl md:text-5xl font-bold">GAME ART</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-[16/10] rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('game-go-north')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <div class="absolute inset-0 flex items-center justify-center bg-stone-900">
+                                <img src="assets/Go North/cover.png" alt="Go North" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" onerror="this.style.display='none'">
+                                <span class="absolute font-display text-3xl md:text-5xl font-bold text-white tracking-tight">GO NORTH</span>
+                            </div>
+                            <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/85 via-black/30 to-transparent">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Game Art</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white mt-1">Go North</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="group hover-trigger tilt-card-wrapper cursor-pointer relative aspect-[16/10] rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('game-tossdown')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative flex items-center justify-center">
+                            <div class="text-center">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Game Art</span>
+                                <h3 class="font-display text-2xl md:text-3xl font-bold text-white mt-2">Tossdown</h3>
+                                <p class="text-xs text-white/60 mt-2 uppercase tracking-widest">Coming Soon</p>
+                            </div>
+                            <div class="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/70 to-transparent">
+                                <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Game Art</span>
+                                <h3 class="font-display text-xl md:text-2xl font-bold text-white mt-1">Tossdown</h3>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= PAGE: GAME - GO NORTH ================= -->
+    <main id="game-go-north" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-7xl mx-auto">
+            <button onclick="openProject('work-game-art')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke="currentColor" stroke-width="2"></path></svg>
+                Back to Games
+            </button>
+
+            <div class="relative aspect-[21/9] rounded-3xl overflow-hidden bg-stone-900 mb-16">
+                <img src="assets/Go North/cover.png" alt="Go North cover" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <h2 class="font-display text-5xl md:text-7xl font-bold text-white">GO NORTH</h2>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6 mb-12">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">GO NORTH</h2>
                 <div class="h-[1px] flex-grow bg-stone-300"></div>
             </div>
 
@@ -475,11 +530,11 @@
                         <h3 class="font-display text-3xl font-bold mt-2">Asset Creation</h3>
                     </div>
                     <div class="md:col-span-8">
-                        <p class="text-lg text-muted leading-relaxed">Props, weapons, environments and other game-focused 3D assets.</p>
+                        <p class="text-lg text-muted leading-relaxed">Game assets, props and visual development.</p>
                     </div>
                 </div>
-                <div id="game-art-assets-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    <!-- Catbag -->
+                <div id="go-north-assets-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <!-- Existing multi-view game assets -->
                     <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
                         <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
                             <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Catbag/front.png','image')"><img src="assets/Catbag/front.png" alt="Catbag front view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
@@ -488,73 +543,74 @@
                         </div>
                         <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Catbag</h4><p class="text-xs text-muted mt-1">Front &bull; Quarter &bull; Back</p></div>
                     </article>
-
-                    <!-- Clown Hat -->
                     <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
                         <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Clown hat/Front.png','image')"><img src="assets/Clown hat/Front.png" alt="Clown hat front view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Clown hat/quarter.png','image')"><img src="assets/Clown hat/quarter.png" alt="Clown hat quarter view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Clown hat/back.png','image')"><img src="assets/Clown hat/back.png" alt="Clown hat back view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Clown hat/Front.png','image')"><img src="assets/Clown hat/Front.png" alt="Clown hat front view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Clown hat/quarter.png','image')"><img src="assets/Clown hat/quarter.png" alt="Clown hat quarter view" class="w-full h-full object-cover"></div>
+                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Clown hat/back.png','image')"><img src="assets/Clown hat/back.png" alt="Clown hat back view" class="w-full h-full object-cover"></div>
                         </div>
                         <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Clown Hat</h4><p class="text-xs text-muted mt-1">Front &bull; Quarter &bull; Back</p></div>
                     </article>
-
-                    <!-- Lady Bug Bag -->
                     <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
                         <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/front.png','image')"><img src="assets/Lady bug bag/front.png" alt="Lady bug bag front view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/quarter.png','image')"><img src="assets/Lady bug bag/quarter.png" alt="Lady bug bag quarter view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/back quarter.png','image')"><img src="assets/Lady bug bag/back quarter.png" alt="Lady bug bag back quarter view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/back.png','image')"><img src="assets/Lady bug bag/back.png" alt="Lady bug bag back view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/front.png','image')"><img src="assets/Lady bug bag/front.png" alt="Lady bug bag front view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/quarter.png','image')"><img src="assets/Lady bug bag/quarter.png" alt="Lady bug bag quarter view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/back quarter.png','image')"><img src="assets/Lady bug bag/back quarter.png" alt="Lady bug bag back quarter view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/back.png','image')"><img src="assets/Lady bug bag/back.png" alt="Lady bug bag back view" class="w-full h-full object-cover"></div>
                         </div>
                         <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Lady Bug Bag</h4><p class="text-xs text-muted mt-1">Front &bull; Quarter &bull; Back</p></div>
                     </article>
-
-                    <!-- Dog Hoodie -->
                     <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
                         <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie.png','image')"><img src="assets/Dog_hoodie.png" alt="Dog hoodie front view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie 3 quarter.png','image')"><img src="assets/Dog_hoodie 3 quarter.png" alt="Dog hoodie three quarter view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie side.png','image')"><img src="assets/Dog_hoodie side.png" alt="Dog hoodie side view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie back.png','image')"><img src="assets/Dog_hoodie back.png" alt="Dog hoodie back view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie.png','image')"><img src="assets/Dog_hoodie.png" alt="Dog hoodie front view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie 3 quarter.png','image')"><img src="assets/Dog_hoodie 3 quarter.png" alt="Dog hoodie three quarter view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie side.png','image')"><img src="assets/Dog_hoodie side.png" alt="Dog hoodie side view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie back.png','image')"><img src="assets/Dog_hoodie back.png" alt="Dog hoodie back view" class="w-full h-full object-cover"></div>
                         </div>
                         <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Dog Hoodie</h4><p class="text-xs text-muted mt-1">Front &bull; 3/4 &bull; Side &bull; Back</p></div>
                     </article>
-
-                    <!-- Frog -->
                     <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
                         <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Frog/Front.png','image')"><img src="assets/Frog/Front.png" alt="Frog front view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Frog/back.png','image')"><img src="assets/Frog/back.png" alt="Frog back view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Frog/Front.png','image')"><img src="assets/Frog/Front.png" alt="Frog front view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Frog/back.png','image')"><img src="assets/Frog/back.png" alt="Frog back view" class="w-full h-full object-cover"></div>
                         </div>
                         <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Frog</h4><p class="text-xs text-muted mt-1">Front &bull; Back</p></div>
                     </article>
-
-                    <!-- Cowboy -->
                     <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
                         <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Cowboy/Front.png','image')"><img src="assets/Cowboy/Front.png" alt="Cowboy front view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Cowboy/back.png','image')"><img src="assets/Cowboy/back.png" alt="Cowboy back view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Cowboy/Front.png','image')"><img src="assets/Cowboy/Front.png" alt="Cowboy front view" class="w-full h-full object-cover"></div>
+                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Cowboy/back.png','image')"><img src="assets/Cowboy/back.png" alt="Cowboy back view" class="w-full h-full object-cover"></div>
                         </div>
                         <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Cowboy</h4><p class="text-xs text-muted mt-1">Front &bull; Back</p></div>
                     </article>
                 </div>
             </section>
 
-            <section>
-                <div class="grid md:grid-cols-12 gap-8 mb-10">
-                    <div class="md:col-span-4">
-                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">02</span>
-                        <h3 class="font-display text-3xl font-bold mt-2">Character Creation</h3>
-                    </div>
-                    <div class="md:col-span-8">
-                        <p class="text-lg text-muted leading-relaxed">Characters, creatures and stylized or realistic game-ready character work.</p>
-                    </div>
+            <div class="mt-24 pt-10 border-t border-stone-300 flex items-center justify-between">
+                <button onclick="openProject('work-game-art')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors">← Back to Games</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= PAGE: GAME - TOSSDOWN ================= -->
+    <main id="game-tossdown" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-7xl mx-auto">
+            <button onclick="openProject('work-game-art')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">← Back to Games</button>
+            <div class="aspect-[21/9] rounded-3xl bg-stone-900 flex items-center justify-center mb-16">
+                <div class="text-center">
+                    <span class="text-accent text-xs font-bold uppercase tracking-widest">Game Art</span>
+                    <h2 class="font-display text-5xl md:text-7xl font-bold text-white mt-2">TOSSDOWN</h2>
+                    <p class="text-white/50 text-xs uppercase tracking-widest mt-4">Assets coming soon</p>
                 </div>
-                <div id="game-art-characters-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    <div class="aspect-square rounded-2xl bg-stone-100 border border-stone-200 flex items-center justify-center text-stone-400 text-xs uppercase tracking-widest">Upload characters here</div>
-                </div>
-            </section>
+            </div>
+            <div class="flex items-center gap-6 mb-12">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">TOSSDOWN</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+            <div class="py-16 border border-stone-200 rounded-2xl bg-white text-center">
+                <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Coming Soon</span>
+                <p class="text-lg text-muted mt-3">Game assets will be added here as you upload them.</p>
+            </div>
         </div>
     </main>
 
