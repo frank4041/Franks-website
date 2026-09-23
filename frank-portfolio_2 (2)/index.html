@@ -531,10 +531,87 @@
                     </div>
                 </article>
 
-                <!-- Category 5: VFX (small banner) -->
+                <!-- Category 5: Product Visualization -->
+                <article id="cat-product-visualization" class="group hover-trigger tilt-card-wrapper cursor-pointer relative col-span-2 lg:col-span-4 row-span-1 rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('work-product-visualization')">
+                    <div class="tilt-card w-full h-full">
+                        <div class="tilt-content w-full h-full relative">
+                            <img src="assets/infinix.png" alt="Product Visualization" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-500"></div>
+                            <div class="relative z-10 w-full h-full flex items-center justify-center p-8 text-center">
+                                <div>
+                                    <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Product Visualization</span>
+                                    <h3 class="font-display text-2xl md:text-3xl font-bold text-white mt-2">Product Visualization</h3>
+                                    <p class="text-xs text-white/80 mt-2 uppercase tracking-widest">Phone Brands &bull; Product Renders</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Category 6: VFX (small banner) -->
                 <article id="cat-vfx" class="group hover-trigger tilt-card-wrapper cursor-pointer relative col-span-2 lg:col-span-4 row-span-1 rounded-3xl overflow-hidden bg-stone-200 flex items-center justify-center" onclick="alert('VFX gallery coming soon!')">
                     <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">VFX &bull; Coming Soon</span>
                 </article>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= PAGE: WORK - PRODUCT VISUALIZATION ================= -->
+    <main id="work-product-visualization" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-7xl mx-auto">
+            <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke="currentColor" stroke-width="2"></path></svg>
+                Back to Work
+            </button>
+
+            <div class="flex items-center gap-6 mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">PRODUCT VISUALIZATION</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+
+            <div class="mb-12">
+                <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Phone Brands</p>
+                <h3 class="font-display text-3xl md:text-4xl font-bold">Phone brands I've worked with</h3>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <article class="group hover-trigger rounded-3xl overflow-hidden bg-stone-100">
+                    <div class="relative">
+                        <img src="assets/infinix1.png" alt="Infinix phone product render" class="block w-full h-auto transition-transform duration-700 group-hover:scale-[1.02]">
+                    </div>
+                    <div class="p-6">
+                        <p class="text-accent text-[10px] font-bold uppercase tracking-widest mb-2">Phone Brand</p>
+                        <h4 class="font-display text-2xl font-bold">Infinix</h4>
+                    </div>
+                </article>
+
+                <article class="rounded-3xl overflow-hidden bg-stone-100 min-h-[280px] flex items-center justify-center border border-stone-200">
+                    <div class="text-center p-8">
+                        <p class="text-stone-400 text-[10px] font-bold uppercase tracking-widest mb-2">Phone Brand</p>
+                        <h4 class="font-display text-2xl font-bold text-stone-400">Samsung</h4>
+                        <p class="text-xs text-stone-400 mt-2">More work coming soon</p>
+                    </div>
+                </article>
+
+                <article class="rounded-3xl overflow-hidden bg-stone-100 min-h-[280px] flex items-center justify-center border border-stone-200">
+                    <div class="text-center p-8">
+                        <p class="text-stone-400 text-[10px] font-bold uppercase tracking-widest mb-2">Phone Brand</p>
+                        <h4 class="font-display text-2xl font-bold text-stone-400">TECNO</h4>
+                        <p class="text-xs text-stone-400 mt-2">More work coming soon</p>
+                    </div>
+                </article>
+            </div>
+
+            <div class="mt-16">
+                <div class="flex items-center gap-6 mb-8">
+                    <h3 class="font-display text-3xl md:text-4xl font-bold">Infinix</h3>
+                    <div class="h-[1px] flex-grow bg-stone-300"></div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <img src="assets/infinix.png" alt="Infinix product render" class="block w-full h-auto rounded-3xl">
+                    <img src="assets/infinix1.png" alt="Infinix product render" class="block w-full h-auto rounded-3xl">
+                    <img src="assets/infinix2.png" alt="Infinix product render" class="block w-full h-auto rounded-3xl md:col-span-2">
+                </div>
             </div>
         </div>
     </main>
