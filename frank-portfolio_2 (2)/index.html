@@ -2393,24 +2393,25 @@
         // EDIT THIS BLOCK to change what's for sale.
         //  - paystackPublicKey: your PUBLIC key (pk_test_... while testing, pk_live_... once live).
         //    Never put your secret key (sk_...) in this file.
-        //  - price is in normal currency units (5000 = ₦5,000). It's converted to kobo for Paystack.
+        //  - price is in normal currency units (3 = $3 when currency is 'USD'). It's converted to the
+        //    smallest unit (cents/kobo) for Paystack.
         //  - image: path to a product image, e.g. 'assets/shop/my-product.png' (empty = placeholder).
         //  - afterPurchase: what the buyer sees once payment succeeds.
         // ------------------------------------------------------------------
         const MARKETPLACE = {
             paystackPublicKey: 'pk_test_REPLACE_WITH_YOUR_PUBLIC_KEY',
-            currency: 'NGN',
+            currency: 'USD',
             products: [
                 {
-                    id: 'product-1',
-                    tag: 'Digital Product',
-                    name: 'Your Product Name',
-                    tagline: 'One line on what it is and who it is for.',
-                    description: 'Two or three sentences on what is included, the file formats, and how it will be delivered.',
-                    includes: ['Item one', 'Item two', 'Item three'],
-                    price: 5000,
+                    id: 'studio-fields',
+                    tag: 'Blender Addon',
+                    name: 'Studio Fields',
+                    tagline: 'A Cinema 4D-style fields system for Blender.',
+                    description: 'Studio Fields brings fields-based control to Blender, so you can drive effects across objects and particles with layered, reusable falloffs instead of keyframing everything by hand.',
+                    includes: [],
+                    price: 3,
                     image: '',
-                    afterPurchase: 'Thank you! A receipt has been sent to your email, and your files will be delivered shortly.'
+                    afterPurchase: 'Thank you! A receipt has been sent to your email, and your download link will follow shortly.'
                 }
             ]
         };
@@ -2428,7 +2429,7 @@
             let activeProduct = null;
 
             const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-            const money = (amount) => new Intl.NumberFormat('en-NG', { style: 'currency', currency: MARKETPLACE.currency, maximumFractionDigits: 0 }).format(amount);
+            const money = (amount) => new Intl.NumberFormat(MARKETPLACE.currency === 'NGN' ? 'en-NG' : 'en-US', { style: 'currency', currency: MARKETPLACE.currency, minimumFractionDigits: Number.isInteger(amount) ? 0 : 2, maximumFractionDigits: 2 }).format(amount);
 
             // ---- Render products ----
             root.innerHTML = MARKETPLACE.products.map((p) => `
