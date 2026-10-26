@@ -262,6 +262,12 @@
             color: #57534E;
         }
 
+        /* --- MOBILE NAV: 5 items no longer fit beside the logo, so drop the pill under it --- */
+        @media (max-width: 640px) {
+            div:has(> #main-nav) { top: 4.25rem !important; max-width: calc(100vw - 16px); }
+            .nav-item { padding: 8px 11px; font-size: 0.8rem; }
+        }
+
         html { scroll-behavior: smooth; }
         ::selection { background: #FF5E00; color: white; }
         ::-webkit-scrollbar { width: 0px; }
@@ -286,6 +292,7 @@
             <button onclick="navigateTo('work')" id="nav-work" class="nav-item hover-trigger">Work</button>
             <button onclick="navigateTo('lab')" id="nav-lab" class="nav-item hover-trigger">Lab</button>
             <button onclick="navigateTo('about')" id="nav-about" class="nav-item hover-trigger">About</button>
+            <button onclick="navigateTo('marketplace')" id="nav-marketplace" class="nav-item hover-trigger">Marketplace</button>
         </nav>
     </div>
 
@@ -1813,6 +1820,57 @@
         </div>
     </main>
 
+    <!-- ================= PAGE: MARKETPLACE ================= -->
+    <main id="marketplace" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-6 mb-6">
+                <h2 class="font-display text-4xl md:text-5xl font-bold">MARKETPLACE</h2>
+                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            </div>
+
+            <p class="max-w-2xl text-lg text-muted leading-relaxed mb-16">Things I've made that you can own. Checkout is handled securely by Paystack, so card, bank transfer and USSD all work.</p>
+
+            <!-- Products are rendered from the MARKETPLACE config in the script at the bottom of this file -->
+            <div id="marketplace-products" class="space-y-10"></div>
+        </div>
+    </main>
+
+    <!-- ================= MARKETPLACE CHECKOUT ================= -->
+    <div id="checkout-modal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4 bg-stone-900/40 backdrop-blur-sm" onclick="closeCheckout()">
+        <div class="relative w-full max-w-md bg-bg rounded-3xl border border-stone-200 shadow-2xl p-8" role="dialog" aria-modal="true" aria-labelledby="checkout-title" onclick="event.stopPropagation()">
+            <button type="button" onclick="closeCheckout()" class="hover-trigger absolute top-5 right-5 text-muted hover:text-text transition-colors" aria-label="Close checkout">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <!-- Step 1: email + pay -->
+            <form id="checkout-form" novalidate>
+                <span class="text-accent text-[10px] font-bold uppercase tracking-widest">Checkout</span>
+                <h3 id="checkout-title" class="font-display text-2xl font-bold mt-1">Product</h3>
+                <p id="checkout-price" class="text-muted mt-1 mb-6"></p>
+
+                <label for="checkout-email" class="block text-xs font-semibold uppercase tracking-widest text-muted mb-2">Email for your receipt</label>
+                <input id="checkout-email" type="email" required autocomplete="email" placeholder="you@example.com"
+                       class="w-full px-5 py-3 rounded-full bg-surface border border-stone-200 focus:outline-none focus:border-accent transition-colors" style="cursor:text">
+
+                <p id="checkout-error" class="text-sm text-red-600 mt-3 min-h-[1.25rem]" role="alert"></p>
+
+                <button type="submit" id="checkout-pay" class="hover-trigger w-full mt-3 px-6 py-4 rounded-full bg-text text-white font-semibold hover:bg-accent transition-colors">Pay</button>
+                <p class="text-[11px] text-muted text-center mt-4">Secured by Paystack. Your card details never touch this site.</p>
+            </form>
+
+            <!-- Step 2: success -->
+            <div id="checkout-success" class="hidden text-center">
+                <div class="w-14 h-14 rounded-full bg-accent/10 text-accent flex items-center justify-center mx-auto mb-5">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h3 class="font-display text-2xl font-bold">Payment received</h3>
+                <p id="checkout-success-note" class="text-muted mt-3 leading-relaxed"></p>
+                <p class="text-xs text-muted mt-5">Reference: <span id="checkout-ref" class="font-mono text-text select-all"></span></p>
+                <button type="button" onclick="closeCheckout()" class="hover-trigger mt-6 px-6 py-3 rounded-full bg-surface border border-stone-200 text-sm font-semibold hover:bg-stone-200 transition-colors">Done</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= PAGE: ABOUT ================= -->
     <main id="about" class="page-section min-h-screen pt-28 px-6 md:px-10 pb-24">
         <div class="max-w-7xl mx-auto">
@@ -2325,6 +2383,166 @@
                     setTimeout(loadHeroVideo, 300);
                 });
             }
+        })();
+    </script>
+
+    <!-- ================= MARKETPLACE + PAYSTACK ================= -->
+    <script src="https://js.paystack.co/v2/inline.js" defer></script>
+    <script>
+        // ------------------------------------------------------------------
+        // EDIT THIS BLOCK to change what's for sale.
+        //  - paystackPublicKey: your PUBLIC key (pk_test_... while testing, pk_live_... once live).
+        //    Never put your secret key (sk_...) in this file.
+        //  - price is in normal currency units (5000 = ₦5,000). It's converted to kobo for Paystack.
+        //  - image: path to a product image, e.g. 'assets/shop/my-product.png' (empty = placeholder).
+        //  - afterPurchase: what the buyer sees once payment succeeds.
+        // ------------------------------------------------------------------
+        const MARKETPLACE = {
+            paystackPublicKey: 'pk_test_REPLACE_WITH_YOUR_PUBLIC_KEY',
+            currency: 'NGN',
+            products: [
+                {
+                    id: 'product-1',
+                    tag: 'Digital Product',
+                    name: 'Your Product Name',
+                    tagline: 'One line on what it is and who it is for.',
+                    description: 'Two or three sentences on what is included, the file formats, and how it will be delivered.',
+                    includes: ['Item one', 'Item two', 'Item three'],
+                    price: 5000,
+                    image: '',
+                    afterPurchase: 'Thank you! A receipt has been sent to your email, and your files will be delivered shortly.'
+                }
+            ]
+        };
+
+        (function initMarketplace() {
+            const root = document.getElementById('marketplace-products');
+            const modal = document.getElementById('checkout-modal');
+            const form = document.getElementById('checkout-form');
+            const emailInput = document.getElementById('checkout-email');
+            const errorEl = document.getElementById('checkout-error');
+            const payBtn = document.getElementById('checkout-pay');
+            const successEl = document.getElementById('checkout-success');
+            if (!root || !modal || !form) return;
+
+            let activeProduct = null;
+
+            const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            const money = (amount) => new Intl.NumberFormat('en-NG', { style: 'currency', currency: MARKETPLACE.currency, maximumFractionDigits: 0 }).format(amount);
+
+            // ---- Render products ----
+            root.innerHTML = MARKETPLACE.products.map((p) => `
+                <article class="grid md:grid-cols-12 gap-8 items-stretch bg-surface border border-stone-200 rounded-3xl overflow-hidden">
+                    <div class="md:col-span-7 aspect-[4/3] md:aspect-auto bg-stone-200 flex items-center justify-center">
+                        ${p.image
+                            ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" class="w-full h-full object-cover">`
+                            : `<span class="text-xs font-bold uppercase tracking-widest text-stone-400">Product image</span>`}
+                    </div>
+                    <div class="md:col-span-5 p-8 md:p-10 flex flex-col justify-center">
+                        <span class="text-accent text-[10px] font-bold uppercase tracking-widest">${esc(p.tag)}</span>
+                        <h3 class="font-display text-3xl md:text-4xl font-bold mt-2">${esc(p.name)}</h3>
+                        <p class="text-lg text-muted mt-3 leading-relaxed">${esc(p.tagline)}</p>
+                        <p class="text-sm text-muted mt-4 leading-relaxed">${esc(p.description)}</p>
+                        ${(p.includes && p.includes.length) ? `<ul class="mt-5 space-y-2 text-sm">${p.includes.map((i) => `<li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span><span>${esc(i)}</span></li>`).join('')}</ul>` : ''}
+                        <div class="flex items-center justify-between gap-4 mt-8 pt-6 border-t border-stone-300">
+                            <span class="font-display text-3xl font-bold">${money(p.price)}</span>
+                            <button type="button" data-buy="${esc(p.id)}" class="hover-trigger px-8 py-4 rounded-full bg-text text-white font-semibold hover:bg-accent transition-colors">Buy now</button>
+                        </div>
+                    </div>
+                </article>`).join('');
+
+            root.addEventListener('click', (e) => {
+                const btn = e.target.closest('[data-buy]');
+                if (!btn) return;
+                const product = MARKETPLACE.products.find((p) => p.id === btn.getAttribute('data-buy'));
+                if (product) openCheckout(product);
+            });
+
+            // ---- Checkout modal ----
+            function setError(msg) { errorEl.textContent = msg || ''; }
+
+            window.openCheckout = function (product) {
+                activeProduct = product;
+                document.getElementById('checkout-title').textContent = product.name;
+                document.getElementById('checkout-price').textContent = money(product.price);
+                payBtn.textContent = 'Pay ' + money(product.price);
+                payBtn.disabled = false;
+                payBtn.classList.remove('opacity-60');
+                setError('');
+                form.classList.remove('hidden');
+                successEl.classList.add('hidden');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => emailInput.focus(), 50);
+            };
+
+            window.closeCheckout = function () {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = '';
+                activeProduct = null;
+            };
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeCheckout();
+            });
+
+            // ---- Paystack ----
+            function makeReference() {
+                const rand = Math.random().toString(36).slice(2, 8).toUpperCase();
+                return 'FRANK-' + Date.now() + '-' + rand;
+            }
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!activeProduct) return;
+                setError('');
+
+                const email = emailInput.value.trim();
+                if (!email || !emailInput.checkValidity()) {
+                    setError('Please enter a valid email address.');
+                    emailInput.focus();
+                    return;
+                }
+                if (!MARKETPLACE.paystackPublicKey || MARKETPLACE.paystackPublicKey.indexOf('REPLACE') !== -1) {
+                    setError('Payments are not switched on yet. Check back soon.');
+                    return;
+                }
+                if (typeof PaystackPop === 'undefined') {
+                    setError('Could not load the payment window. Check your connection and try again.');
+                    return;
+                }
+
+                const product = activeProduct;
+                payBtn.disabled = true;
+                payBtn.classList.add('opacity-60');
+
+                const popup = new PaystackPop();
+                popup.newTransaction({
+                    key: MARKETPLACE.paystackPublicKey,
+                    email: email,
+                    amount: Math.round(product.price * 100), // kobo
+                    currency: MARKETPLACE.currency,
+                    ref: makeReference(),
+                    metadata: {
+                        custom_fields: [
+                            { display_name: 'Product', variable_name: 'product', value: product.name }
+                        ]
+                    },
+                    onSuccess: (tx) => {
+                        document.getElementById('checkout-success-note').textContent = product.afterPurchase;
+                        document.getElementById('checkout-ref').textContent = (tx && (tx.reference || tx.trxref)) || '';
+                        form.classList.add('hidden');
+                        successEl.classList.remove('hidden');
+                    },
+                    onCancel: () => {
+                        payBtn.disabled = false;
+                        payBtn.classList.remove('opacity-60');
+                        setError('Payment was cancelled. You have not been charged.');
+                    }
+                });
+            });
         })();
     </script>
 </body>
