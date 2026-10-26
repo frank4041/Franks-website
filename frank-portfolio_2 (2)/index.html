@@ -2393,7 +2393,7 @@
         // EDIT THIS BLOCK to change what's for sale.
         //  - paystackPublicKey: your PUBLIC key (pk_test_... while testing, pk_live_... once live).
         //    Never put your secret key (sk_...) in this file.
-        //  - price is in normal currency units (3 = $3 when currency is 'USD'). It's converted to the
+        //  - price is in normal currency units (4200 = ₦4,200 when currency is 'NGN'). It's converted to the
         //    smallest unit (cents/kobo) for Paystack.
         //  - images: list of image paths. The first is the main image; extras show as clickable
         //    thumbnails (empty list = placeholder). Click the main image to enlarge it.
@@ -2401,7 +2401,7 @@
         // ------------------------------------------------------------------
         const MARKETPLACE = {
             paystackPublicKey: 'pk_live_bf8eddcf65a9d79b95ee40e8e50116b6320b0294',
-            currency: 'USD',
+            currency: 'NGN',
             products: [
                 {
                     id: 'studio-fields',
@@ -2410,7 +2410,7 @@
                     tagline: 'Cinema 4D MoGraph, inside Blender.',
                     description: 'Studio Fields is an add-on for Blender users that brings parts of Cinema 4D\'s MoGraph into Blender.',
                     includes: [],
-                    price: 3,
+                    price: 4200,
                     images: [
                         'assets/studio-fields/studio-fields-1.png',
                         'assets/studio-fields/studio-fields-2.png',
