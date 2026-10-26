@@ -2395,7 +2395,8 @@
         //    Never put your secret key (sk_...) in this file.
         //  - price is in normal currency units (3 = $3 when currency is 'USD'). It's converted to the
         //    smallest unit (cents/kobo) for Paystack.
-        //  - image: path to a product image, e.g. 'assets/shop/my-product.png' (empty = placeholder).
+        //  - images: list of image paths. The first is the main image; extras show as clickable
+        //    thumbnails (empty list = placeholder). Click the main image to enlarge it.
         //  - afterPurchase: what the buyer sees once payment succeeds.
         // ------------------------------------------------------------------
         const MARKETPLACE = {
@@ -2404,13 +2405,17 @@
             products: [
                 {
                     id: 'studio-fields',
-                    tag: 'Blender Addon',
+                    tag: 'Blender Add-on',
                     name: 'Studio Fields',
-                    tagline: 'A Cinema 4D-style fields system for Blender.',
-                    description: 'Studio Fields brings fields-based control to Blender, so you can drive effects across objects and particles with layered, reusable falloffs instead of keyframing everything by hand.',
+                    tagline: 'Cinema 4D MoGraph, inside Blender.',
+                    description: 'Studio Fields is an add-on for Blender users that brings parts of Cinema 4D\'s MoGraph into Blender.',
                     includes: [],
                     price: 3,
-                    image: '',
+                    images: [
+                        'assets/studio-fields/studio-fields-1.png',
+                        'assets/studio-fields/studio-fields-2.png',
+                        'assets/studio-fields/studio-fields-3.png'
+                    ],
                     afterPurchase: 'Thank you! A receipt has been sent to your email, and your download link will follow shortly.'
                 }
             ]
@@ -2434,11 +2439,17 @@
             // ---- Render products ----
             root.innerHTML = MARKETPLACE.products.map((p) => `
                 <article class="grid md:grid-cols-12 gap-8 items-stretch bg-surface border border-stone-200 rounded-3xl overflow-hidden">
-                    <div class="md:col-span-7 aspect-[4/3] md:aspect-auto bg-stone-200 flex items-center justify-center">
-                        ${p.image
-                            ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" class="w-full h-full object-cover">`
-                            : `<span class="text-xs font-bold uppercase tracking-widest text-stone-400">Product image</span>`}
-                    </div>
+                    ${(p.images && p.images.length)
+                        ? `<div class="md:col-span-7 p-4 md:p-6 flex flex-col justify-center gap-3">
+                            <button type="button" data-zoom="${esc(p.id)}" class="hover-trigger block w-full aspect-video rounded-2xl overflow-hidden bg-stone-900 cursor-zoom-in" aria-label="Enlarge ${esc(p.name)} image">
+                                <img data-main="${esc(p.id)}" src="${esc(p.images[0])}" alt="${esc(p.name)} preview" class="w-full h-full object-cover">
+                            </button>
+                            ${p.images.length > 1 ? `<div class="grid grid-cols-3 gap-3">${p.images.map((src, i) => `
+                                <button type="button" data-thumb="${esc(p.id)}" data-src="${esc(src)}" class="hover-trigger block aspect-video rounded-xl overflow-hidden bg-stone-900 ring-2 ring-offset-2 ring-offset-surface ${i === 0 ? 'ring-accent' : 'ring-transparent opacity-70 hover:opacity-100'} transition-all" aria-label="Show image ${i + 1}">
+                                    <img src="${esc(src)}" alt="" class="w-full h-full object-cover" loading="lazy">
+                                </button>`).join('')}</div>` : ''}
+                        </div>`
+                        : `<div class="md:col-span-7 aspect-[4/3] md:aspect-auto bg-stone-200 flex items-center justify-center"><span class="text-xs font-bold uppercase tracking-widest text-stone-400">Product image</span></div>`}
                     <div class="md:col-span-5 p-8 md:p-10 flex flex-col justify-center">
                         <span class="text-accent text-[10px] font-bold uppercase tracking-widest">${esc(p.tag)}</span>
                         <h3 class="font-display text-3xl md:text-4xl font-bold mt-2">${esc(p.name)}</h3>
@@ -2453,6 +2464,25 @@
                 </article>`).join('');
 
             root.addEventListener('click', (e) => {
+                const thumb = e.target.closest('[data-thumb]');
+                if (thumb) {
+                    const id = thumb.getAttribute('data-thumb');
+                    const main = root.querySelector('[data-main="' + id + '"]');
+                    if (main) main.src = thumb.getAttribute('data-src');
+                    root.querySelectorAll('[data-thumb="' + id + '"]').forEach((t) => {
+                        const on = t === thumb;
+                        t.classList.toggle('ring-accent', on);
+                        t.classList.toggle('ring-transparent', !on);
+                        t.classList.toggle('opacity-70', !on);
+                    });
+                    return;
+                }
+                const zoom = e.target.closest('[data-zoom]');
+                if (zoom) {
+                    const main = zoom.querySelector('img');
+                    if (main && typeof openLightbox === 'function') openLightbox(main.getAttribute('src'), 'image');
+                    return;
+                }
                 const btn = e.target.closest('[data-buy]');
                 if (!btn) return;
                 const product = MARKETPLACE.products.find((p) => p.id === btn.getAttribute('data-buy'));
