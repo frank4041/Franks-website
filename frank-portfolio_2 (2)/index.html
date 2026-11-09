@@ -337,7 +337,7 @@
             <div class="flex items-center gap-6 mb-12">
                 <h2 class="font-display text-3xl md:text-4xl font-bold">SELECTED WORK</h2>
                 <div class="h-[1px] flex-grow bg-stone-300"></div>
-                <button onclick="navigateTo('work')" class="text-sm font-bold uppercase tracking-widest text-muted hover:text-accent transition-colors hover-trigger whitespace-nowrap">View All &rarr;</button>
+                <button onclick="navigateTo('work')" class="work-link text-sm font-bold uppercase tracking-widest text-muted hover:text-accent transition-colors hover-trigger whitespace-nowrap">View All <span aria-hidden="true">&rarr;</span></button>
             </div>
 
             <div class="grid md:grid-cols-2 gap-6 md:gap-8">
@@ -408,14 +408,14 @@
                     <div class="ama-item">
                     <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left" data-answer="I started out really liking Photoshop and 2D, and that eventually got me really interested in 3D. I love that with 3D, I can build a whole world from scratch, the models, the lights, the materials, the camera, all of it. That freedom to create and bring an idea to life is a big part of why I love 3D.">
                         <span class="font-medium text-base">What's your story?</span>
-                        <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
+                        <span aria-hidden="true" class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
                     </button>
                     </div>
                     
                     <div class="ama-item">
                     <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left relative" data-answer="Outside of work, I love movies and games, and I'm actually pretty good at games too. I spend a lot of time going out and hanging out with my girlfriend, and I also really enjoy traveling. That's pretty much it.">
                         <span class="font-medium text-base">What do you do outside of work?</span>
-                        <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
+                        <span aria-hidden="true" class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
                         <!-- Cute floating heart -->
                         <svg class="absolute -right-3 -top-3 w-6 h-6 text-pink-400 animate-float fill-current drop-shadow-sm" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     </button>
@@ -424,7 +424,7 @@
                     <div class="ama-item">
                     <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left" data-answer="I'm best at turning ideas into finished 3D work, modeling, materials, lighting, rendering, and the little details that make an asset feel properly finished.">
                         <span class="font-medium text-base">What are you best at?</span>
-                        <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
+                        <span aria-hidden="true" class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
                     </button>
                     </div>
                     
@@ -433,7 +433,7 @@
                         <!-- Cute floating star -->
                         <svg class="absolute -left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-yellow-400 animate-float-delayed fill-current drop-shadow-sm" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                         <span class="font-medium text-base">How do you think about design?</span>
-                        <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
+                        <span aria-hidden="true" class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
                     </button>
                     </div>
                 </div>
@@ -2373,15 +2373,16 @@
             const card = wrapper.querySelector('.tilt-card');
             const content = wrapper.querySelector('.tilt-content');
             
-            if(card) {
+            if(card && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
                 wrapper.addEventListener('mousemove', (e) => {
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { card.style.transform = ''; return; }
                     const rect = wrapper.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -5; // Subtle tilt
-                    const rotateY = ((x - centerX) / centerX) * 5;
+                    const rotateX = ((y - centerY) / centerY) * -2; // A restrained sense of depth
+                    const rotateY = ((x - centerX) / centerX) * 2;
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
                     if(content) content.style.transform = `translateZ(20px)`;
                 });
@@ -2392,6 +2393,32 @@
             }
         });
     </script>
+
+
+    <style>
+      /* Small, purposeful feedback: a cue to explore, a quiet arrow and an open-state mark. */
+      .tilt-card-wrapper::after {
+        content: '→'; position: absolute; z-index: 2; top: 18px; right: 18px;
+        display: grid; place-items: center; width: 38px; height: 38px;
+        border: 1px solid rgba(255,255,255,.55); border-radius: 50%;
+        background: rgba(28,25,23,.6); color: white; font-size: 19px;
+        opacity: 0; transform: translate(-4px, 4px);
+        transition: opacity .22s ease, transform .22s ease; pointer-events: none;
+      }
+      .tilt-card-wrapper:hover::after, .tilt-card-wrapper:focus-visible::after { opacity: 1; transform: translate(0, 0); }
+      .tilt-card-wrapper:focus-visible .tilt-content > div span { opacity: 1; transform: translateY(0); }
+      .work-link span { display: inline-block; transition: transform .22s ease; }
+      .work-link:hover span, .work-link:focus-visible span { transform: translateX(4px); }
+      .ama-pill > span:last-child { transition: transform .22s ease, border-color .22s ease, color .22s ease; }
+      .ama-pill[aria-expanded="true"] > span:last-child { transform: rotate(45deg); border-color: #b54400; color: #a63e00; }
+      .ama-pill[aria-expanded="true"] { background: #e8e6e3; }
+      @media (hover: none) { .tilt-card-wrapper::after { opacity: 1; transform: none; } }
+      @media (prefers-reduced-motion: reduce) {
+        .tilt-card-wrapper::after, .work-link span, .ama-pill > span:last-child, .tilt-card { transition: none; }
+        .tilt-card { transform: none !important; }
+        .tilt-content { transform: none !important; }
+      }
+    </style>
 
     <!-- Hero video lazy-load: fires after first paint so the page feels instant -->
     <script>
