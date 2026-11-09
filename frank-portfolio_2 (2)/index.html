@@ -459,46 +459,77 @@
 
     
         
+
         <!-- Brands I've worked with -->
-        <section id="brands-worked-with" class="py-20 md:py-28 px-6 md:px-10 max-w-[1600px] mx-auto border-t border-stone-200">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
-                <div>
-                    <p class="text-xs uppercase tracking-[0.24em] text-muted font-semibold mb-3">Selected collaborations</p>
-                    <h2 class="font-display text-3xl md:text-5xl font-bold tracking-tight">Brands I’ve worked with</h2>
+        <section id="brands-worked-with" class="relative py-20 md:py-24 px-6 md:px-10 max-w-[1600px] mx-auto border-t border-stone-200/80">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 md:mb-14">
+                    <div>
+                        <p class="text-[10px] md:text-xs uppercase tracking-[0.28em] text-stone-400 font-semibold mb-3">Selected collaborations</p>
+                        <h2 class="font-display text-3xl md:text-5xl font-bold tracking-tight text-stone-900">Brands I’ve worked with<span class="text-stone-300">.</span></h2>
+                    </div>
+                    <p class="text-xs md:text-sm text-stone-400 tracking-wide">A few familiar names.</p>
                 </div>
-                <p class="text-sm text-muted max-w-sm leading-relaxed">A selection of brands I’ve had the opportunity to work with.</p>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
-                <div class="min-h-28 md:min-h-36 rounded-2xl bg-white border border-stone-200 flex items-center justify-center p-6 hover:border-stone-400 transition-colors" aria-label="Pepsi">
-                    <div class="flex items-center gap-2.5">
-                        <svg viewBox="0 0 48 48" class="w-10 h-10 md:w-12 md:h-12 shrink-0" role="img" aria-label="Pepsi logo">
-                            <circle cx="24" cy="24" r="22" fill="#005CB4"/>
-                            <path d="M4.5 17.5C10 21 17 23 24 23c8 0 14-2.1 19.5-5.5A22 22 0 0 1 24 46 22 22 0 0 1 4.5 17.5Z" fill="#E32934"/>
-                            <path d="M4.5 17.5C10 21 17 23 24 23c8 0 14-2.1 19.5-5.5-1.1-3.4-3.2-6.4-6-8.7C30.5 16.4 17.5 17.8 6.1 11.8a21.8 21.8 0 0 0-1.6 5.7Z" fill="#fff"/>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 border-l border-t border-stone-200/80">
+                    <div class="group min-h-28 md:min-h-32 flex items-center justify-center p-6 md:p-8 border-r border-b border-stone-200/80" role="img" aria-label="Pepsi">
+                        <svg viewBox="0 0 150 48" class="w-32 md:w-36 h-10 md:h-12 text-stone-500 transition-colors duration-300 group-hover:text-stone-800" fill="currentColor">
+                            <circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" stroke-width="4"/>
+                            <path d="M8 17c10 5 22 6 32 1M8 28c10-5 22-6 32-1" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+                            <text x="53" y="33" font-family="Arial,sans-serif" font-size="29" font-weight="700" letter-spacing="-1.5">pepsi</text>
                         </svg>
-                        <span class="font-bold tracking-tight text-xl md:text-2xl text-[#005CB4]">pepsi</span>
+                    </div>
+                    <div class="group min-h-28 md:min-h-32 flex items-center justify-center p-6 md:p-8 border-r border-b border-stone-200/80" role="img" aria-label="Oraimo">
+                        <svg viewBox="0 0 170 48" class="w-32 md:w-36 h-10 md:h-12 text-stone-500 transition-colors duration-300 group-hover:text-stone-800" fill="currentColor">
+                            <text x="4" y="35" font-family="Arial,sans-serif" font-size="35" font-weight="700" letter-spacing="-1.7">oraimo</text>
+                        </svg>
+                    </div>
+                    <div class="group min-h-28 md:min-h-32 flex items-center justify-center p-6 md:p-8 border-r border-b border-stone-200/80" role="img" aria-label="PUMA">
+                        <svg viewBox="0 0 150 60" class="w-32 md:w-36 h-10 md:h-12 text-stone-500 transition-colors duration-300 group-hover:text-stone-800" fill="currentColor">
+                            <path d="M16 17c10-2 17-8 22-14 2 8-1 13-7 17 9 0 18-4 24-11 1 10-4 18-13 22-8 4-18 4-27 1l-9 5 3-10c-4-3-6-7-5-12 4 2 8 3 12 2Z" transform="translate(0 5) scale(.9)"/>
+                            <text x="52" y="43" font-family="Arial,sans-serif" font-size="34" font-weight="900" font-style="italic" letter-spacing="-2">PUMA</text>
+                        </svg>
+                    </div>
+                    <div class="group min-h-28 md:min-h-32 flex items-center justify-center p-6 md:p-8 border-r border-b border-stone-200/80" role="img" aria-label="Google Gemini">
+                        <svg viewBox="0 0 190 52" class="w-36 md:w-40 h-10 md:h-12 text-stone-500 transition-colors duration-300 group-hover:text-stone-800" fill="currentColor">
+                            <path d="M23 2c2.8 13.4 7.2 17.8 20 23-12.8 5.2-17.2 9.6-20 23C20.2 34.6 15.8 30.2 3 25 15.8 19.8 20.2 15.4 23 2Z"/>
+                            <text x="53" y="36" font-family="Arial,sans-serif" font-size="31" font-weight="600" letter-spacing="-1">Gemini</text>
+                        </svg>
+                    </div>
+                    <div class="group min-h-28 md:min-h-32 flex items-center justify-center p-6 md:p-8 border-r border-b border-stone-200/80" role="img" aria-label="Samsung">
+                        <svg viewBox="0 0 180 52" class="w-36 md:w-40 h-10 md:h-12 text-stone-500 transition-colors duration-300 group-hover:text-stone-800" fill="currentColor">
+                            <text x="4" y="36" font-family="Arial,sans-serif" font-size="34" font-weight="900" font-style="italic" letter-spacing="-1.8">SAMSUNG</text>
+                        </svg>
+                    </div>
+                    <div class="group min-h-28 md:min-h-32 flex items-center justify-center p-6 md:p-8 border-r border-b border-stone-200/80" role="img" aria-label="TECNO">
+                        <svg viewBox="0 0 160 52" class="w-32 md:w-36 h-10 md:h-12 text-stone-500 transition-colors duration-300 group-hover:text-stone-800" fill="currentColor">
+                            <text x="4" y="36" font-family="Arial,sans-serif" font-size="34" font-weight="900" letter-spacing="1">TECNO</text>
+                        </svg>
+                    </div>
+                    <div class="group min-h-28 md:min-h-32 flex items-center justify-center p-6 md:p-8 border-r border-b border-stone-200/80" role="img" aria-label="Infinix">
+                        <svg viewBox="0 0 170 52" class="w-32 md:w-36 h-10 md:h-12 text-stone-500 transition-colors duration-300 group-hover:text-stone-800" fill="currentColor">
+                            <text x="4" y="36" font-family="Arial,sans-serif" font-size="34" font-weight="700" letter-spacing="-1.8">Infinix</text>
+                        </svg>
+                    </div>
+                    <div class="group min-h-28 md:min-h-32 flex items-center justify-center p-6 md:p-8 border-r border-b border-stone-200/80" role="img" aria-label="MTV Base">
+                        <svg viewBox="0 0 170 58" class="w-32 md:w-36 h-11 md:h-14 text-stone-500 transition-colors duration-300 group-hover:text-stone-800" fill="currentColor">
+                            <path d="M3 5h21l17 28V5h20v48H41L23 25v28H3Z"/>
+                            <text x="67" y="30" font-family="Arial,sans-serif" font-size="27" font-weight="900" letter-spacing="-2">TV</text>
+                            <text x="67" y="49" font-family="Arial,sans-serif" font-size="13" font-weight="800" letter-spacing="3">BASE</text>
+                        </svg>
+                    </div>
+                    <div class="group min-h-28 md:min-h-32 flex items-center justify-center p-6 md:p-8 border-r border-b border-stone-200/80" role="img" aria-label="Cartoon Network">
+                        <svg viewBox="0 0 190 58" class="w-36 md:w-40 h-11 md:h-14 text-stone-500 transition-colors duration-300 group-hover:text-stone-800" fill="currentColor">
+                            <rect x="3" y="4" width="40" height="40" rx="2"/><rect x="43" y="4" width="40" height="40" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <text x="11" y="34" font-family="Arial,sans-serif" font-size="28" font-weight="900" fill="#FAFAF9">C</text>
+                            <text x="50" y="34" font-family="Arial,sans-serif" font-size="28" font-weight="900">N</text>
+                            <text x="94" y="25" font-family="Arial,sans-serif" font-size="17" font-weight="900" letter-spacing="-0.8">CARTOON</text>
+                            <text x="94" y="43" font-family="Arial,sans-serif" font-size="17" font-weight="900" letter-spacing="-0.8">NETWORK</text>
+                        </svg>
                     </div>
                 </div>
-                <div class="min-h-28 md:min-h-36 rounded-2xl bg-white border border-stone-200 flex items-center justify-center p-6 hover:border-stone-400 transition-colors" aria-label="Oraimo">
-                    <span class="font-bold tracking-[0.12em] text-2xl md:text-3xl text-stone-800">oraimo</span>
-                </div>
-                <div class="min-h-28 md:min-h-36 rounded-2xl bg-white border border-stone-200 flex items-center justify-center p-6 hover:border-stone-400 transition-colors" aria-label="PUMA">
-                    <div class="flex flex-col items-center gap-1">
-                        <img src="https://cdn.simpleicons.org/puma/181818" alt="PUMA logo" class="h-9 md:h-11 w-auto max-w-full object-contain" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-                        <span class="hidden font-black italic tracking-tight text-2xl md:text-3xl text-stone-900">PUMA</span>
-                    </div>
-                </div>
-                <div class="min-h-28 md:min-h-36 rounded-2xl bg-white border border-stone-200 flex items-center justify-center p-6 hover:border-stone-400 transition-colors" aria-label="Google Gemini">
-                    <div class="flex items-center gap-2">
-                        <img src="https://cdn.simpleicons.org/googlegemini/4285F4" alt="Google Gemini logo" class="h-9 md:h-11 w-auto object-contain" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
-                        <span class="hidden font-semibold text-xl md:text-2xl text-stone-800">Gemini</span>
-                    </div>
-                </div>
-                <div class="min-h-28 md:min-h-36 rounded-2xl bg-white border border-stone-200 flex items-center justify-center p-6 hover:border-stone-400 transition-colors" aria-label="TECNO">
-                    <span class="font-black tracking-[0.08em] text-2xl md:text-3xl text-stone-800">TECNO</span>
-                </div>
-                <div class="min-h-28 md:min-h-36 rounded-2xl bg-white border border-stone-200 flex items-center justify-center p-6 hover:border-stone-400 transition-colors" aria-label="Infinix">
-                    <span class="font-black tracking-tight text-2xl md:text-3xl text-stone-800">Infinix</span>
+                <div class="mt-5 flex items-center gap-3">
+                    <span class="h-px w-8 bg-stone-300"></span>
+                    <span class="text-[10px] uppercase tracking-[0.2em] text-stone-400">Experience across brands and platforms</span>
                 </div>
             </div>
         </section>
