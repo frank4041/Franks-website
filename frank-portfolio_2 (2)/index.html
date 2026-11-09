@@ -113,80 +113,83 @@
         .tilt-card { transform-style: preserve-3d; transform: perspective(1000px); transition: transform 0.1s ease-out; }
         .tilt-content { transform: translateZ(20px); }
 
-        /* AMA Styles */
-        .ama-pill {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(0,0,0,0.03);
-            transition: all 0.3s ease;
-        }
-        .ama-pill:hover {
-            background: #FFFFFF;
-            transform: translateX(8px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-        }
-        .ama-answer-bubble {
-            position: absolute;
-            left: 64px;
-            width: min(250px, calc(100% - 64px));
-            padding: 10px 13px;
-            border-radius: 12px;
-            background: #1688F7;
-            color: #FFFFFF;
-            font-size: 10px;
-            line-height: 1.35;
-            font-weight: 500;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.10);
-            z-index: 5;
-            opacity: 0;
-            filter: blur(7px);
-            transform: translateY(8px) scale(0.97);
-            transform-origin: left top;
-            pointer-events: none;
-            transition: opacity 0.3s ease, filter 0.35s ease, transform 0.35s ease;
-        }
-        .ama-answer-bubble::after {
-            content: "";
-            position: absolute;
-            left: -6px;
-            top: 10px;
-            width: 12px;
-            height: 12px;
-            background: #1688F7;
-            transform: rotate(45deg);
-            border-radius: 2px;
-            z-index: -1;
-        }
-        .ama-answer-bubble.is-visible {
-            opacity: 1;
-            filter: blur(0);
-            transform: translateY(0) scale(1);
-        }
-        @media (max-width: 768px) {
-            .ama-answer-bubble {
-                left: 24px;
-                width: calc(100% - 24px);
-                max-width: 280px;
-            }
-        }
-        .ama-answer {
-            overflow: hidden;
-            max-height: 240px;
-            opacity: 1;
-            transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease;
-        }
-        .ama-answer[hidden] {
-            display: block;
-            max-height: 0;
-            opacity: 0;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-        }
-        .ama-item.is-open .ama-pill {
-            background: #FFFFFF;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-        }
+        /* AMA: the response flows between the questions, like a conversation. */
+        .ama-pill { background: #efefee; border: 1px solid transparent; transition: background .2s ease; min-height: 48px; }
+        .ama-pill:hover { background: #e6e5e3; }
+        .ama-pill:focus-visible, .gn-page button:focus-visible { outline: 3px solid #2783de; outline-offset: 3px; }
+        .ama-reply { display: flex; justify-content: flex-end; padding: 8px 6px 4px 0; }
+        .ama-reply[hidden] { display: none; }
+        .ama-answer-bubble { position: relative; width: fit-content; max-width: min(310px, 87%); padding: 13px 16px; border-radius: 16px 16px 4px 16px; background: #0878ee; color: #fff; font-size: 15px; line-height: 1.45; animation: ama-enter .25s ease both; }
+        .ama-answer-bubble::after { content: ''; position: absolute; right: -5px; bottom: 0; width: 12px; height: 12px; background: #0878ee; clip-path: polygon(0 0, 100% 100%, 0 100%); }
+        @keyframes ama-enter { from { opacity: 0; transform: translateY(6px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+        @media (prefers-reduced-motion: reduce) { .ama-answer-bubble { animation: none; } }
 
+        /* Go North case study */
+        .gn-back { min-height: 44px; color: #68635e; font-size: 14px; font-weight: 500; transition: color .2s; }
+        .gn-back:hover { color: #ff5e00; }
+        .gn-hero { margin-top: 20px; overflow: hidden; border-radius: 16px; background: #e7e5e4; }
+        .gn-hero img { display: block; width: 100%; height: auto; }
+        .gn-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: end; margin: 56px 0 40px; }
+        .gn-eyebrow { color: #a63e00; font-size: 12px; line-height: 1.4; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+        .gn-title { margin-top: 14px; font-size: clamp(48px, 6vw, 82px); font-weight: 700; line-height: 1; letter-spacing: -.055em; }
+        .gn-title span, .gn-section-heading h3 span { color: #ff5e00; }
+        .gn-lede { max-width: 530px; color: #615d58; font-size: 18px; line-height: 1.65; }
+        .gn-meta { display: grid; grid-template-columns: 1fr 1fr 2fr; border-top: 1px solid #d6d3d1; border-bottom: 1px solid #d6d3d1; }
+        .gn-meta > div { padding: 22px 24px 22px 0; }
+        .gn-meta span { color: #746e68; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; }
+        .gn-meta p { color: #292524; margin-top: 7px; font-size: 15px; line-height: 1.5; }
+        .gn-gallery { margin-top: 100px; }
+        .gn-section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; }
+        .gn-section-heading h3 { margin-top: 12px; font-size: clamp(30px, 3vw, 44px); line-height: 1.12; font-weight: 700; letter-spacing: -.035em; }
+        .gn-section-heading > p { max-width: 310px; color: #68635e; font-size: 15px; line-height: 1.5; }
+        .gn-filter { display: flex; flex-wrap: wrap; gap: 8px; margin: 32px 0 24px; }
+        .gn-filter button { min-height: 44px; padding: 9px 17px; border: 1px solid #d6d3d1; border-radius: 999px; color: #57534e; font-size: 14px; font-weight: 600; transition: background .2s, color .2s; }
+        .gn-filter button:hover { background: #eeedeb; }
+        .gn-filter button[aria-pressed="true"] { background: #292524; border-color: #292524; color: white; }
+        .gn-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 28px; }
+        .gn-card[hidden] { display: none; }
+        .gn-card-button { display: block; width: 100%; text-align: left; }
+        .gn-card-image { display: block; overflow: hidden; aspect-ratio: 1 / 1; border-radius: 12px; background: #373737; }
+        .gn-card-image img { display: block; width: 100%; height: 100%; object-fit: contain; transition: transform .35s ease; }
+        .gn-card-button:hover img { transform: scale(1.025); }
+        .gn-card-caption { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 2px 0; }
+        .gn-card-name { color: #292524; font-size: 17px; font-weight: 700; }
+        .gn-card-views { color: #68635e; font-size: 13px; white-space: nowrap; }
+        .gn-more { display: flex; justify-content: center; margin-top: 40px; }
+        .gn-more button { min-height: 48px; padding: 10px 22px; border: 1px solid #292524; border-radius: 999px; font-size: 14px; font-weight: 700; }
+        .gn-more button:hover { background: #292524; color: #fff; }
+        .gn-more button[hidden] { display: none; }
+        .gn-bottom { border-top: 1px solid #d6d3d1; margin-top: 96px; padding-top: 24px; }
+        #gn-viewer { width: min(850px, calc(100% - 32px)); max-height: min(92vh, 950px); padding: 24px; border: 0; border-radius: 16px; color: #292524; background: #fafaf9; box-shadow: 0 20px 70px #0005; }
+        #gn-viewer::backdrop { background: rgba(28,25,23,.72); }
+        .gn-viewer-head { display: flex; align-items: start; justify-content: space-between; gap: 20px; margin-bottom: 16px; }
+        .gn-viewer-head h3 { margin-top: 6px; font-size: 25px; font-weight: 700; }
+        .gn-close, .gn-prev, .gn-next { width: 44px; height: 44px; border: 1px solid #d6d3d1; border-radius: 50%; font-size: 21px; }
+        .gn-close:hover, .gn-prev:hover, .gn-next:hover { background: #eee; }
+        .gn-viewer-image { height: min(52vh, 530px); min-height: 220px; background: #373737; border-radius: 10px; overflow: hidden; }
+        .gn-viewer-image img { width: 100%; height: 100%; object-fit: contain; }
+        .gn-viewer-footer { display: flex; gap: 20px; justify-content: center; align-items: center; margin: 14px 0; }
+        .gn-count { color: #57534e; font-size: 14px; }
+        .gn-thumbs { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .gn-thumbs button { width: 64px; height: 64px; overflow: hidden; border-radius: 6px; border: 2px solid transparent; background: #373737; opacity: .7; }
+        .gn-thumbs button[aria-pressed="true"] { border-color: #b54400; opacity: 1; }
+        .gn-thumbs img { width: 100%; height: 100%; object-fit: contain; }
+        @media (max-width: 767px) {
+          .gn-intro { grid-template-columns: 1fr; gap: 20px; margin: 36px 0 28px; }
+          .gn-lede { font-size: 16px; }
+          .gn-meta { grid-template-columns: 1fr 1fr; }
+          .gn-meta > div { padding: 16px 12px 16px 0; }
+          .gn-meta > div:last-child { grid-column: 1 / -1; border-top: 1px solid #e7e5e4; }
+          .gn-gallery { margin-top: 64px; }
+          .gn-section-heading { display: block; }
+          .gn-section-heading > p { margin-top: 12px; }
+          .gn-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px 14px; }
+          .gn-card-caption { display: block; padding-top: 10px; }
+          .gn-card-name { display: block; font-size: 15px; }
+          .gn-card-views { display: block; margin-top: 3px; }
+          #gn-viewer { padding: 16px; }
+        }
+        @media (prefers-reduced-motion: reduce) { .gn-card-image img { transition: none; } }
 
         /* --- TOSSDOWN CASE STUDY HIERARCHY --- */
         .tossdown-page .tossdown-hero {
@@ -398,29 +401,37 @@
                 <h2 class="font-display text-3xl md:text-4xl font-bold text-text mb-6">AMA <span class="text-muted font-light text-xl md:text-2xl">(Ask me anything).</span></h2>
                 
                 <div id="ama-list" class="space-y-3 relative">
+                    <div class="ama-item">
                     <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left" data-answer="I started out really liking Photoshop and 2D, and that eventually got me really interested in 3D. I love that with 3D, I can build a whole world from scratch, the models, the lights, the materials, the camera, all of it. That freedom to create and bring an idea to life is a big part of why I love 3D.">
                         <span class="font-medium text-base">What's your story?</span>
                         <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
                     </button>
+                    </div>
                     
+                    <div class="ama-item">
                     <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left relative" data-answer="Outside of work, I love movies and games, and I'm actually pretty good at games too. I spend a lot of time going out and hanging out with my girlfriend, and I also really enjoy traveling. That's pretty much it.">
                         <span class="font-medium text-base">What do you do outside of work?</span>
                         <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
                         <!-- Cute floating heart -->
                         <svg class="absolute -right-3 -top-3 w-6 h-6 text-pink-400 animate-float fill-current drop-shadow-sm" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     </button>
+                    </div>
                     
+                    <div class="ama-item">
                     <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left" data-answer="I'm best at turning ideas into finished 3D work, modeling, materials, lighting, rendering, and the little details that make an asset feel properly finished.">
                         <span class="font-medium text-base">What are you best at?</span>
                         <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
                     </button>
+                    </div>
                     
+                    <div class="ama-item">
                     <button class="ama-pill w-full md:w-auto px-6 py-3 rounded-full flex items-center justify-between gap-8 group hover-trigger text-left relative" data-answer="I think about design through form, function, and visual storytelling. For 3D, that means making sure the model reads well, the details support the idea, and every camera angle feels intentional.">
                         <!-- Cute floating star -->
                         <svg class="absolute -left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-yellow-400 animate-float-delayed fill-current drop-shadow-sm" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                         <span class="font-medium text-base">How do you think about design?</span>
                         <span class="w-5 h-5 rounded-full border border-stone-300 flex items-center justify-center text-muted group-hover:border-accent group-hover:text-accent transition-colors text-xs">+</span>
                     </button>
+                    </div>
                 </div>
             </div>
 
@@ -704,386 +715,280 @@
     </main>
 
     <!-- ================= PAGE: GAME - GO NORTH ================= -->
-    <main id="game-go-north" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
-        <div class="max-w-7xl mx-auto">
-            <button onclick="openProject('work-game-art')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke="currentColor" stroke-width="2"></path></svg>
-                Back to Games
-            </button>
-
-            <div class="relative rounded-3xl overflow-hidden bg-stone-900 mb-16">
-                <img src="assets/Go north.jpg" alt="Go North cover" class="block w-full h-auto">
-            </div>
-
-            <div class="flex items-center gap-6 mb-12">
-                <h2 class="font-display text-4xl md:text-5xl font-bold">GO NORTH</h2>
-                <div class="h-[1px] flex-grow bg-stone-300"></div>
-            </div>
-
-            <section class="mb-20">
-                <div class="grid md:grid-cols-2 gap-10 border-y border-stone-300 py-8">
-                    <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Company / Studio</span><p class="text-lg font-medium mt-2">TBD</p></div>
-                    <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Role</span><p class="text-lg font-medium mt-2">3D Artist / Game Artist</p></div>
-                    <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Project Type</span><p class="text-lg font-medium mt-2">Game Art</p></div>
-                    <div><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Status</span><p class="text-lg font-medium mt-2">TBD</p></div>
-                </div>
-                <div class="grid md:grid-cols-12 gap-8 mt-12">
-                    <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Brief</span><h3 class="font-display text-3xl font-bold mt-2">The Project</h3></div>
-                    <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">For Go North, I created accessories for the game, along with props, other supporting assets, and a range of fruits and flowers.</p></div>
-                </div>
-                <div class="grid md:grid-cols-12 gap-8 mt-10">
-                    <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">My Contribution</span><h3 class="font-display text-3xl font-bold mt-2">What I Did</h3></div>
-                    <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">I created and developed game accessories, props, supporting assets, fruits, and flowers for the project.</p></div>
-                </div>
-                <div class="grid md:grid-cols-12 gap-8 mt-10">
-                    <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Softwares Used</span><h3 class="font-display text-3xl font-bold mt-2">Software</h3></div>
-                    <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">Blender &bull; Substance Painter &bull; ZBrush</p></div>
-                </div>
-            </section>
-
-            <section class="mb-20">
-                <div class="grid md:grid-cols-12 gap-8 mb-10">
-                    <div class="md:col-span-4">
-                        <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">01</span>
-                        <h3 class="font-display text-3xl font-bold mt-2">Asset Creation</h3>
-                    </div>
-                    <div class="md:col-span-8">
-                        <p class="text-lg text-muted leading-relaxed">Game assets, props and visual development.</p>
-                    </div>
-                </div>
-                <div id="go-north-assets-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    <!-- Existing multi-view game assets -->
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Catbag/front.png','image')"><img src="assets/Catbag/front.png" alt="Catbag front view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Catbag/quarter.png','image')"><img src="assets/Catbag/quarter.png" alt="Catbag quarter view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Catbag/back.png','image')"><img src="assets/Catbag/back.png" alt="Catbag back view" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Catbag</h4><p class="text-xs text-muted mt-1">Front &bull; Quarter &bull; Back</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Clown hat/Front.png','image')"><img src="assets/Clown hat/Front.png" alt="Clown hat front view" class="w-full h-full object-cover"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Clown hat/quarter.png','image')"><img src="assets/Clown hat/quarter.png" alt="Clown hat quarter view" class="w-full h-full object-cover"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Clown hat/back.png','image')"><img src="assets/Clown hat/back.png" alt="Clown hat back view" class="w-full h-full object-cover"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Clown Hat</h4><p class="text-xs text-muted mt-1">Front &bull; Quarter &bull; Back</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/front.png','image')"><img src="assets/Lady bug bag/front.png" alt="Lady bug bag front view" class="w-full h-full object-cover"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/quarter.png','image')"><img src="assets/Lady bug bag/quarter.png" alt="Lady bug bag quarter view" class="w-full h-full object-cover"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/back quarter.png','image')"><img src="assets/Lady bug bag/back quarter.png" alt="Lady bug bag back quarter view" class="w-full h-full object-cover"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Lady bug bag/back.png','image')"><img src="assets/Lady bug bag/back.png" alt="Lady bug bag back view" class="w-full h-full object-cover"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Lady Bug Bag</h4><p class="text-xs text-muted mt-1">Front &bull; Quarter &bull; Back</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie.png','image')"><img src="assets/Dog_hoodie.png" alt="Dog hoodie front view" class="w-full h-full object-cover"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie 3 quarter.png','image')"><img src="assets/Dog_hoodie 3 quarter.png" alt="Dog hoodie three quarter view" class="w-full h-full object-cover"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie side.png','image')"><img src="assets/Dog_hoodie side.png" alt="Dog hoodie side view" class="w-full h-full object-cover"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Dog_hoodie back.png','image')"><img src="assets/Dog_hoodie back.png" alt="Dog hoodie back view" class="w-full h-full object-cover"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Dog Hoodie</h4><p class="text-xs text-muted mt-1">Front &bull; 3/4 &bull; Side &bull; Back</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Frog/Front.png','image')"><img src="assets/Frog/Front.png" alt="Frog front view" class="w-full h-full object-cover"></div>
-                            
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Frog</h4><p class="text-xs text-muted mt-1">Front &bull; Back</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Cowboy/Front.png','image')"><img src="assets/Cowboy/Front.png" alt="Cowboy front view" class="w-full h-full object-cover"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Cowboy/back.png','image')"><img src="assets/Cowboy/back.png" alt="Cowboy back view" class="w-full h-full object-cover"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Cowboy</h4><p class="text-xs text-muted mt-1">Front &bull; Back</p></div>
-                    </article>                    <div class="col-span-full pt-10 mt-4 border-t border-stone-200"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">Accessories</span><h4 class="font-display text-2xl md:text-3xl font-bold mt-2">Game Accessories</h4><p class="text-sm text-muted mt-2 max-w-2xl">Accessories created for the game, alongside props, other supporting assets, and fruits and flowers.</p></div><article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0001.png','image')"><img src="assets/Go North assets Renders/0001.png" alt="Little Wanderer" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0002.png','image')"><img src="assets/Go North assets Renders/0002.png" alt="Little Wanderer" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0003.png','image')"><img src="assets/Go North assets Renders/0003.png" alt="Little Wanderer" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Little Wanderer</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0004.png','image')"><img src="assets/Go North assets Renders/0004.png" alt="Alien Door" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0005.png','image')"><img src="assets/Go North assets Renders/0005.png" alt="Alien Door" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0006.png','image')"><img src="assets/Go North assets Renders/0006.png" alt="Alien Door" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Alien Door</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0007.png','image')"><img src="assets/Go North assets Renders/0007.png" alt="Broken Door" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0008.png','image')"><img src="assets/Go North assets Renders/0008.png" alt="Broken Door" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0009.png','image')"><img src="assets/Go North assets Renders/0009.png" alt="Broken Door" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Broken Door</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0010.png','image')"><img src="assets/Go North assets Renders/0010.png" alt="Church Door" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0011.png','image')"><img src="assets/Go North assets Renders/0011.png" alt="Church Door" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0012.png','image')"><img src="assets/Go North assets Renders/0012.png" alt="Church Door" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Church Door</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0013.png','image')"><img src="assets/Go North assets Renders/0013.png" alt="Lab Doors" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0014.png','image')"><img src="assets/Go North assets Renders/0014.png" alt="Lab Doors" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0015.png','image')"><img src="assets/Go North assets Renders/0015.png" alt="Lab Doors" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Lab Doors</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0016.png','image')"><img src="assets/Go North assets Renders/0016.png" alt="Sun Door" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0017.png','image')"><img src="assets/Go North assets Renders/0017.png" alt="Sun Door" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0018.png','image')"><img src="assets/Go North assets Renders/0018.png" alt="Sun Door" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Sun Door</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0019.png','image')"><img src="assets/Go North assets Renders/0019.png" alt="Gloves" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0020.png','image')"><img src="assets/Go North assets Renders/0020.png" alt="Gloves" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0021.png','image')"><img src="assets/Go North assets Renders/0021.png" alt="Gloves" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Gloves</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0022.png','image')"><img src="assets/Go North assets Renders/0022.png" alt="Heavenly Gates" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0023.png','image')"><img src="assets/Go North assets Renders/0023.png" alt="Heavenly Gates" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0024.png','image')"><img src="assets/Go North assets Renders/0024.png" alt="Heavenly Gates" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Heavenly Gates</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0025.png','image')"><img src="assets/Go North assets Renders/0025.png" alt="Happy Chunk" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0026.png','image')"><img src="assets/Go North assets Renders/0026.png" alt="Happy Chunk" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0027.png','image')"><img src="assets/Go North assets Renders/0027.png" alt="Happy Chunk" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Happy Chunk</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0028.png','image')"><img src="assets/Go North assets Renders/0028.png" alt="Robot" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0029.png','image')"><img src="assets/Go North assets Renders/0029.png" alt="Robot" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0030.png','image')"><img src="assets/Go North assets Renders/0030.png" alt="Robot" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Robot</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0031.png','image')"><img src="assets/Go North assets Renders/0031.png" alt="North Thing" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0032.png','image')"><img src="assets/Go North assets Renders/0032.png" alt="North Thing" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0033.png','image')"><img src="assets/Go North assets Renders/0033.png" alt="North Thing" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">North Thing</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0037.png','image')"><img src="assets/Go North assets Renders/0037.png" alt="Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0038.png','image')"><img src="assets/Go North assets Renders/0038.png" alt="Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0039.png','image')"><img src="assets/Go North assets Renders/0039.png" alt="Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Hat</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0040.png','image')"><img src="assets/Go North assets Renders/0040.png" alt="Cat Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0041.png','image')"><img src="assets/Go North assets Renders/0041.png" alt="Cat Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0042.png','image')"><img src="assets/Go North assets Renders/0042.png" alt="Cat Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Cat Bag</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0043.png','image')"><img src="assets/Go North assets Renders/0043.png" alt="Sack Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0044.png','image')"><img src="assets/Go North assets Renders/0044.png" alt="Sack Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0045.png','image')"><img src="assets/Go North assets Renders/0045.png" alt="Sack Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Sack Bag</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0046.png','image')"><img src="assets/Go North assets Renders/0046.png" alt="Explorer Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0047.png','image')"><img src="assets/Go North assets Renders/0047.png" alt="Explorer Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0048.png','image')"><img src="assets/Go North assets Renders/0048.png" alt="Explorer Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Explorer Bag</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0049.png','image')"><img src="assets/Go North assets Renders/0049.png" alt="Pirate Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0050.png','image')"><img src="assets/Go North assets Renders/0050.png" alt="Pirate Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0051.png','image')"><img src="assets/Go North assets Renders/0051.png" alt="Pirate Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Pirate Hat</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0052.png','image')"><img src="assets/Go North assets Renders/0052.png" alt="Flower Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0053.png','image')"><img src="assets/Go North assets Renders/0053.png" alt="Flower Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0054.png','image')"><img src="assets/Go North assets Renders/0054.png" alt="Flower Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Flower Hat</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0055.png','image')"><img src="assets/Go North assets Renders/0055.png" alt="The Other Thing" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0056.png','image')"><img src="assets/Go North assets Renders/0056.png" alt="The Other Thing" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0057.png','image')"><img src="assets/Go North assets Renders/0057.png" alt="The Other Thing" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">The Other Thing</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0058.png','image')"><img src="assets/Go North assets Renders/0058.png" alt="Cowboy Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0059.png','image')"><img src="assets/Go North assets Renders/0059.png" alt="Cowboy Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0060.png','image')"><img src="assets/Go North assets Renders/0060.png" alt="Cowboy Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Cowboy Hat</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0064.png','image')"><img src="assets/Go North assets Renders/0064.png" alt="Turtle Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0065.png','image')"><img src="assets/Go North assets Renders/0065.png" alt="Turtle Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0066.png','image')"><img src="assets/Go North assets Renders/0066.png" alt="Turtle Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Turtle Bag</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0067.png','image')"><img src="assets/Go North assets Renders/0067.png" alt="Burger Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0068.png','image')"><img src="assets/Go North assets Renders/0068.png" alt="Burger Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0069.png','image')"><img src="assets/Go North assets Renders/0069.png" alt="Burger Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Burger Bag</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0070.png','image')"><img src="assets/Go North assets Renders/0070.png" alt="Sunflower Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0071.png','image')"><img src="assets/Go North assets Renders/0071.png" alt="Sunflower Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0072.png','image')"><img src="assets/Go North assets Renders/0072.png" alt="Sunflower Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Sunflower Hat</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0073.png','image')"><img src="assets/Go North assets Renders/0073.png" alt="Knapsack Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0074.png','image')"><img src="assets/Go North assets Renders/0074.png" alt="Knapsack Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0075.png','image')"><img src="assets/Go North assets Renders/0075.png" alt="Knapsack Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Knapsack Bag</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0076.png','image')"><img src="assets/Go North assets Renders/0076.png" alt="Mushroom Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0077.png','image')"><img src="assets/Go North assets Renders/0077.png" alt="Mushroom Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0078.png','image')"><img src="assets/Go North assets Renders/0078.png" alt="Mushroom Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Mushroom Bag</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0079.png','image')"><img src="assets/Go North assets Renders/0079.png" alt="Owl Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0080.png','image')"><img src="assets/Go North assets Renders/0080.png" alt="Owl Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0081.png','image')"><img src="assets/Go North assets Renders/0081.png" alt="Owl Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Owl Hat</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0082.png','image')"><img src="assets/Go North assets Renders/0082.png" alt="Mushroom Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0083.png','image')"><img src="assets/Go North assets Renders/0083.png" alt="Mushroom Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0084.png','image')"><img src="assets/Go North assets Renders/0084.png" alt="Mushroom Hat" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Mushroom Hat</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0085.png','image')"><img src="assets/Go North assets Renders/0085.png" alt="Owl Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0086.png','image')"><img src="assets/Go North assets Renders/0086.png" alt="Owl Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0087.png','image')"><img src="assets/Go North assets Renders/0087.png" alt="Owl Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Owl Bag</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0088.png','image')"><img src="assets/Go North assets Renders/0088.png" alt="Star Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0089.png','image')"><img src="assets/Go North assets Renders/0089.png" alt="Star Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0090.png','image')"><img src="assets/Go North assets Renders/0090.png" alt="Star Bag" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Star Bag</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0091.png','image')"><img src="assets/Go North assets Renders/0091.png" alt="Pocket Thing" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0092.png','image')"><img src="assets/Go North assets Renders/0092.png" alt="Pocket Thing" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0093.png','image')"><img src="assets/Go North assets Renders/0093.png" alt="Pocket Thing" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Pocket Thing</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0094.png','image')"><img src="assets/Go North assets Renders/0094.png" alt="Northbound Buddy" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0095.png','image')"><img src="assets/Go North assets Renders/0095.png" alt="Northbound Buddy" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0096.png','image')"><img src="assets/Go North assets Renders/0096.png" alt="Northbound Buddy" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Northbound Buddy</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0097.png','image')"><img src="assets/Go North assets Renders/0097.png" alt="Little Brick" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0098.png','image')"><img src="assets/Go North assets Renders/0098.png" alt="Little Brick" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0099.png','image')"><img src="assets/Go North assets Renders/0099.png" alt="Little Brick" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Little Brick</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0100.png','image')"><img src="assets/Go North assets Renders/0100.png" alt="The Odd Job" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0101.png','image')"><img src="assets/Go North assets Renders/0101.png" alt="The Odd Job" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0102.png','image')"><img src="assets/Go North assets Renders/0102.png" alt="The Odd Job" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">The Odd Job</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0103.png','image')"><img src="assets/Go North assets Renders/0103.png" alt="Round Thing" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0104.png','image')"><img src="assets/Go North assets Renders/0104.png" alt="Round Thing" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0105.png','image')"><img src="assets/Go North assets Renders/0105.png" alt="Round Thing" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Round Thing</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    <article class="group rounded-2xl overflow-hidden bg-white border border-stone-200 hover:shadow-lg transition-shadow">
-                        <div class="grid grid-cols-2 gap-1 bg-stone-100 p-1">
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0106.png','image')"><img src="assets/Go North assets Renders/0106.png" alt="Tiny Friend" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="aspect-square overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0107.png','image')"><img src="assets/Go North assets Renders/0107.png" alt="Tiny Friend" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                            <div class="col-span-2 aspect-[2/1] overflow-hidden cursor-pointer hover-trigger" onclick="openLightbox('assets/Go North assets Renders/0108.png','image')"><img src="assets/Go North assets Renders/0108.png" alt="Tiny Friend" class="block w-full h-auto group-hover:scale-[1.02] transition-transform duration-500"></div>
-                        </div>
-                        <div class="p-5"><span class="text-accent text-[10px] font-bold uppercase tracking-widest">Asset Creation</span><h4 class="font-display text-xl font-bold mt-1">Tiny Friend</h4><p class="text-xs text-muted mt-1">3 views</p></div>
-                    </article>
-                    
-                </div>
-            </section>
-
-            
-
-            <div class="mt-24 pt-10 border-t border-stone-300 flex items-center justify-between">
-                <button onclick="openProject('work-game-art')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors">← Back to Games</button>
-            </div>
+    <main id="game-go-north" class="page-section gn-page min-h-screen pt-32 px-6 md:px-10 pb-24">
+      <div class="max-w-7xl mx-auto">
+        <button onclick="openProject('work-game-art')" class="hover-trigger gn-back">← Back to Games</button>
+        <div class="gn-hero"><img src="assets/Go north.jpg" alt="Go North game artwork"></div>
+        <div class="gn-intro">
+          <div><p class="gn-eyebrow">Game art &nbsp; / &nbsp; Asset creation</p><h2 class="font-display gn-title">Go North<span>.</span></h2></div>
+          <p class="gn-lede">A collection of game accessories, props, fruits and flowers created for the world of Go North.</p>
         </div>
+        <div class="gn-meta" aria-label="Project details">
+          <div><span>Role</span><p>3D Artist / Game Artist</p></div>
+          <div><span>Project</span><p>Game art</p></div>
+          <div><span>Tools</span><p>Blender · Substance Painter · ZBrush</p></div>
+        </div>
+        <section class="gn-gallery" aria-labelledby="gn-gallery-title">
+          <div class="gn-section-heading"><div><p class="gn-eyebrow">The collection</p><h3 id="gn-gallery-title" class="font-display">Made for the journey<span>.</span></h3></div><p>Explore the assets and select one to see every view.</p></div>
+          <div class="gn-filter" role="group" aria-label="Filter assets">
+            <button type="button" data-gn-filter="All" aria-pressed="true">All assets</button>
+            <button type="button" data-gn-filter="Bags" aria-pressed="false">Bags</button>
+            <button type="button" data-gn-filter="Hats" aria-pressed="false">Hats</button>
+            <button type="button" data-gn-filter="Doors" aria-pressed="false">Doors</button>
+            <button type="button" data-gn-filter="Other" aria-pressed="false">More assets</button>
+          </div>
+          <div class="gn-grid" id="go-north-assets-grid">
+<article class="gn-card" data-category="Bags" >
+    <button type="button" class="gn-card-button" data-gn-open="0" aria-label="View Catbag, 3 views">
+      <span class="gn-card-image"><img src="assets/Catbag/front.png" alt="Catbag" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Catbag</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Hats" >
+    <button type="button" class="gn-card-button" data-gn-open="1" aria-label="View Clown Hat, 3 views">
+      <span class="gn-card-image"><img src="assets/Clown hat/Front.png" alt="Clown Hat" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Clown Hat</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Bags" >
+    <button type="button" class="gn-card-button" data-gn-open="2" aria-label="View Lady Bug Bag, 4 views">
+      <span class="gn-card-image"><img src="assets/Lady bug bag/front.png" alt="Lady Bug Bag" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Lady Bug Bag</span><span class="gn-card-views">4 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" >
+    <button type="button" class="gn-card-button" data-gn-open="3" aria-label="View Dog Hoodie, 4 views">
+      <span class="gn-card-image"><img src="assets/Dog_hoodie.png" alt="Dog Hoodie" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Dog Hoodie</span><span class="gn-card-views">4 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" >
+    <button type="button" class="gn-card-button" data-gn-open="4" aria-label="View Frog, 1 view">
+      <span class="gn-card-image"><img src="assets/Frog/Front.png" alt="Frog" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Frog</span><span class="gn-card-views">1 view <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Hats" >
+    <button type="button" class="gn-card-button" data-gn-open="5" aria-label="View Cowboy, 2 views">
+      <span class="gn-card-image"><img src="assets/Cowboy/Front.png" alt="Cowboy" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Cowboy</span><span class="gn-card-views">2 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" >
+    <button type="button" class="gn-card-button" data-gn-open="6" aria-label="View Little Wanderer, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0001.png" alt="Little Wanderer" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Little Wanderer</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Doors" >
+    <button type="button" class="gn-card-button" data-gn-open="7" aria-label="View Alien Door, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0004.png" alt="Alien Door" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Alien Door</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Doors" >
+    <button type="button" class="gn-card-button" data-gn-open="8" aria-label="View Broken Door, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0007.png" alt="Broken Door" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Broken Door</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Doors" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="9" aria-label="View Church Door, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0010.png" alt="Church Door" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Church Door</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Doors" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="10" aria-label="View Lab Doors, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0013.png" alt="Lab Doors" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Lab Doors</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Doors" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="11" aria-label="View Sun Door, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0016.png" alt="Sun Door" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Sun Door</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="12" aria-label="View Gloves, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0019.png" alt="Gloves" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Gloves</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Doors" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="13" aria-label="View Heavenly Gates, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0022.png" alt="Heavenly Gates" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Heavenly Gates</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="14" aria-label="View Happy Chunk, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0025.png" alt="Happy Chunk" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Happy Chunk</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="15" aria-label="View Robot, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0028.png" alt="Robot" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Robot</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="16" aria-label="View North Thing, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0031.png" alt="North Thing" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">North Thing</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Hats" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="17" aria-label="View Hat, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0037.png" alt="Hat" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Hat</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Bags" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="18" aria-label="View Cat Bag, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0040.png" alt="Cat Bag" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Cat Bag</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Bags" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="19" aria-label="View Sack Bag, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0043.png" alt="Sack Bag" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Sack Bag</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Bags" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="20" aria-label="View Explorer Bag, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0046.png" alt="Explorer Bag" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Explorer Bag</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Hats" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="21" aria-label="View Pirate Hat, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0049.png" alt="Pirate Hat" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Pirate Hat</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Hats" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="22" aria-label="View Flower Hat, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0052.png" alt="Flower Hat" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Flower Hat</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="23" aria-label="View The Other Thing, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0055.png" alt="The Other Thing" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">The Other Thing</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Hats" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="24" aria-label="View Cowboy Hat, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0058.png" alt="Cowboy Hat" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Cowboy Hat</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Bags" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="25" aria-label="View Turtle Bag, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0064.png" alt="Turtle Bag" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Turtle Bag</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Bags" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="26" aria-label="View Burger Bag, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0067.png" alt="Burger Bag" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Burger Bag</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Hats" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="27" aria-label="View Sunflower Hat, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0070.png" alt="Sunflower Hat" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Sunflower Hat</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Bags" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="28" aria-label="View Knapsack Bag, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0073.png" alt="Knapsack Bag" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Knapsack Bag</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Bags" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="29" aria-label="View Mushroom Bag, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0076.png" alt="Mushroom Bag" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Mushroom Bag</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Hats" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="30" aria-label="View Owl Hat, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0079.png" alt="Owl Hat" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Owl Hat</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Hats" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="31" aria-label="View Mushroom Hat, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0082.png" alt="Mushroom Hat" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Mushroom Hat</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Bags" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="32" aria-label="View Owl Bag, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0085.png" alt="Owl Bag" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Owl Bag</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Bags" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="33" aria-label="View Star Bag, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0088.png" alt="Star Bag" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Star Bag</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="34" aria-label="View Pocket Thing, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0091.png" alt="Pocket Thing" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Pocket Thing</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="35" aria-label="View Northbound Buddy, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0094.png" alt="Northbound Buddy" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Northbound Buddy</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="36" aria-label="View Little Brick, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0097.png" alt="Little Brick" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Little Brick</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="37" aria-label="View The Odd Job, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0100.png" alt="The Odd Job" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">The Odd Job</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="38" aria-label="View Round Thing, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0103.png" alt="Round Thing" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Round Thing</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+<article class="gn-card" data-category="Other" hidden>
+    <button type="button" class="gn-card-button" data-gn-open="39" aria-label="View Tiny Friend, 3 views">
+      <span class="gn-card-image"><img src="assets/Go North assets Renders/0106.png" alt="Tiny Friend" loading="lazy"></span>
+      <span class="gn-card-caption"><span class="gn-card-name">Tiny Friend</span><span class="gn-card-views">3 views <span aria-hidden="true">↗</span></span></span>
+    </button>
+  </article>
+          </div>
+          <div class="gn-more"><button type="button" id="gn-show-more">Show all assets <span aria-hidden="true">↓</span></button></div>
+        </section>
+        <div class="gn-bottom"><button onclick="openProject('work-game-art')" class="hover-trigger gn-back">← Back to Games</button></div>
+      </div>
+      <dialog id="gn-viewer" aria-labelledby="gn-viewer-title">
+        <div class="gn-viewer-head"><div><p class="gn-eyebrow">Go North / Asset details</p><h3 id="gn-viewer-title" class="font-display"></h3></div><button type="button" class="gn-close" aria-label="Close asset viewer">×</button></div>
+        <div class="gn-viewer-image"><img id="gn-viewer-image" src="" alt=""></div>
+        <div class="gn-viewer-footer"><button type="button" class="gn-prev" aria-label="Previous view">←</button><span class="gn-count" aria-live="polite"></span><button type="button" class="gn-next" aria-label="Next view">→</button></div>
+        <div class="gn-thumbs" aria-label="Choose a view"></div>
+      </dialog>
     </main>
 
     <!-- ================= PAGE: GAME - TOSSDOWN ================= -->
@@ -2163,54 +2068,80 @@
             scheduleBlink();
         })();
 
-        // --- AMA INTERACTION ---
+        // --- AMA: one in-flow reply at a time ---
         (function initAMA() {
-            const list = document.getElementById('ama-list');
-            if (!list) return;
-
-            const questions = Array.from(list.querySelectorAll('button.ama-pill'));
-            let activeBubble = null;
-            let activeButton = null;
-
-            function closeBubble() {
-                if (activeBubble) {
-                    activeBubble.classList.remove('is-visible');
-                    const bubbleToRemove = activeBubble;
-                    setTimeout(() => bubbleToRemove.remove(), 350);
-                    activeBubble = null;
-                }
-                if (activeButton) {
-                    activeButton.setAttribute('aria-expanded', 'false');
-                    activeButton = null;
-                }
-            }
-
-            questions.forEach((button) => {
-                button.setAttribute('type', 'button');
-                button.setAttribute('aria-expanded', 'false');
-
-                button.addEventListener('click', () => {
-                    const isSame = activeButton === button;
-                    closeBubble();
-                    if (isSame) return;
-
-                    const bubble = document.createElement('div');
-                    bubble.className = 'ama-answer-bubble';
-                    bubble.textContent = button.dataset.answer || '';
-                    bubble.setAttribute('role', 'status');
-
-                    // Keep the bubble anchored to the clicked question without
-                    // changing the position/size of the existing question list.
-                    bubble.style.top = (button.offsetTop + button.offsetHeight - 4) + 'px';
-                    list.appendChild(bubble);
-
-                    activeBubble = bubble;
-                    activeButton = button;
-                    button.setAttribute('aria-expanded', 'true');
-
-                    requestAnimationFrame(() => bubble.classList.add('is-visible'));
-                });
+          const list = document.getElementById('ama-list');
+          if (!list) return;
+          const buttons = [...list.querySelectorAll('.ama-pill')];
+          buttons.forEach((button, index) => {
+            button.type = 'button';
+            button.setAttribute('aria-expanded', 'false');
+            const reply = document.createElement('div');
+            reply.className = 'ama-reply'; reply.id = 'ama-reply-' + index; reply.hidden = true;
+            const bubble = document.createElement('div'); bubble.className = 'ama-answer-bubble';
+            bubble.textContent = button.dataset.answer || '';
+            reply.appendChild(bubble); button.after(reply);
+            button.setAttribute('aria-controls', reply.id);
+            button.addEventListener('click', () => {
+              const shouldOpen = reply.hidden;
+              buttons.forEach(other => { other.setAttribute('aria-expanded', 'false'); document.getElementById(other.getAttribute('aria-controls')).hidden = true; });
+              reply.hidden = !shouldOpen; button.setAttribute('aria-expanded', String(shouldOpen));
             });
+          });
+        })();
+
+        // --- GO NORTH GALLERY ---
+        (function initGoNorth() {
+          const assets = [{"name":"Catbag","category":"Bags","images":["assets/Catbag/front.png","assets/Catbag/quarter.png","assets/Catbag/back.png"]},{"name":"Clown Hat","category":"Hats","images":["assets/Clown hat/Front.png","assets/Clown hat/quarter.png","assets/Clown hat/back.png"]},{"name":"Lady Bug Bag","category":"Bags","images":["assets/Lady bug bag/front.png","assets/Lady bug bag/quarter.png","assets/Lady bug bag/back quarter.png","assets/Lady bug bag/back.png"]},{"name":"Dog Hoodie","category":"Other","images":["assets/Dog_hoodie.png","assets/Dog_hoodie 3 quarter.png","assets/Dog_hoodie side.png","assets/Dog_hoodie back.png"]},{"name":"Frog","category":"Other","images":["assets/Frog/Front.png"]},{"name":"Cowboy","category":"Hats","images":["assets/Cowboy/Front.png","assets/Cowboy/back.png"]},{"name":"Little Wanderer","category":"Other","images":["assets/Go North assets Renders/0001.png","assets/Go North assets Renders/0002.png","assets/Go North assets Renders/0003.png"]},{"name":"Alien Door","category":"Doors","images":["assets/Go North assets Renders/0004.png","assets/Go North assets Renders/0005.png","assets/Go North assets Renders/0006.png"]},{"name":"Broken Door","category":"Doors","images":["assets/Go North assets Renders/0007.png","assets/Go North assets Renders/0008.png","assets/Go North assets Renders/0009.png"]},{"name":"Church Door","category":"Doors","images":["assets/Go North assets Renders/0010.png","assets/Go North assets Renders/0011.png","assets/Go North assets Renders/0012.png"]},{"name":"Lab Doors","category":"Doors","images":["assets/Go North assets Renders/0013.png","assets/Go North assets Renders/0014.png","assets/Go North assets Renders/0015.png"]},{"name":"Sun Door","category":"Doors","images":["assets/Go North assets Renders/0016.png","assets/Go North assets Renders/0017.png","assets/Go North assets Renders/0018.png"]},{"name":"Gloves","category":"Other","images":["assets/Go North assets Renders/0019.png","assets/Go North assets Renders/0020.png","assets/Go North assets Renders/0021.png"]},{"name":"Heavenly Gates","category":"Doors","images":["assets/Go North assets Renders/0022.png","assets/Go North assets Renders/0023.png","assets/Go North assets Renders/0024.png"]},{"name":"Happy Chunk","category":"Other","images":["assets/Go North assets Renders/0025.png","assets/Go North assets Renders/0026.png","assets/Go North assets Renders/0027.png"]},{"name":"Robot","category":"Other","images":["assets/Go North assets Renders/0028.png","assets/Go North assets Renders/0029.png","assets/Go North assets Renders/0030.png"]},{"name":"North Thing","category":"Other","images":["assets/Go North assets Renders/0031.png","assets/Go North assets Renders/0032.png","assets/Go North assets Renders/0033.png"]},{"name":"Hat","category":"Hats","images":["assets/Go North assets Renders/0037.png","assets/Go North assets Renders/0038.png","assets/Go North assets Renders/0039.png"]},{"name":"Cat Bag","category":"Bags","images":["assets/Go North assets Renders/0040.png","assets/Go North assets Renders/0041.png","assets/Go North assets Renders/0042.png"]},{"name":"Sack Bag","category":"Bags","images":["assets/Go North assets Renders/0043.png","assets/Go North assets Renders/0044.png","assets/Go North assets Renders/0045.png"]},{"name":"Explorer Bag","category":"Bags","images":["assets/Go North assets Renders/0046.png","assets/Go North assets Renders/0047.png","assets/Go North assets Renders/0048.png"]},{"name":"Pirate Hat","category":"Hats","images":["assets/Go North assets Renders/0049.png","assets/Go North assets Renders/0050.png","assets/Go North assets Renders/0051.png"]},{"name":"Flower Hat","category":"Hats","images":["assets/Go North assets Renders/0052.png","assets/Go North assets Renders/0053.png","assets/Go North assets Renders/0054.png"]},{"name":"The Other Thing","category":"Other","images":["assets/Go North assets Renders/0055.png","assets/Go North assets Renders/0056.png","assets/Go North assets Renders/0057.png"]},{"name":"Cowboy Hat","category":"Hats","images":["assets/Go North assets Renders/0058.png","assets/Go North assets Renders/0059.png","assets/Go North assets Renders/0060.png"]},{"name":"Turtle Bag","category":"Bags","images":["assets/Go North assets Renders/0064.png","assets/Go North assets Renders/0065.png","assets/Go North assets Renders/0066.png"]},{"name":"Burger Bag","category":"Bags","images":["assets/Go North assets Renders/0067.png","assets/Go North assets Renders/0068.png","assets/Go North assets Renders/0069.png"]},{"name":"Sunflower Hat","category":"Hats","images":["assets/Go North assets Renders/0070.png","assets/Go North assets Renders/0071.png","assets/Go North assets Renders/0072.png"]},{"name":"Knapsack Bag","category":"Bags","images":["assets/Go North assets Renders/0073.png","assets/Go North assets Renders/0074.png","assets/Go North assets Renders/0075.png"]},{"name":"Mushroom Bag","category":"Bags","images":["assets/Go North assets Renders/0076.png","assets/Go North assets Renders/0077.png","assets/Go North assets Renders/0078.png"]},{"name":"Owl Hat","category":"Hats","images":["assets/Go North assets Renders/0079.png","assets/Go North assets Renders/0080.png","assets/Go North assets Renders/0081.png"]},{"name":"Mushroom Hat","category":"Hats","images":["assets/Go North assets Renders/0082.png","assets/Go North assets Renders/0083.png","assets/Go North assets Renders/0084.png"]},{"name":"Owl Bag","category":"Bags","images":["assets/Go North assets Renders/0085.png","assets/Go North assets Renders/0086.png","assets/Go North assets Renders/0087.png"]},{"name":"Star Bag","category":"Bags","images":["assets/Go North assets Renders/0088.png","assets/Go North assets Renders/0089.png","assets/Go North assets Renders/0090.png"]},{"name":"Pocket Thing","category":"Other","images":["assets/Go North assets Renders/0091.png","assets/Go North assets Renders/0092.png","assets/Go North assets Renders/0093.png"]},{"name":"Northbound Buddy","category":"Other","images":["assets/Go North assets Renders/0094.png","assets/Go North assets Renders/0095.png","assets/Go North assets Renders/0096.png"]},{"name":"Little Brick","category":"Other","images":["assets/Go North assets Renders/0097.png","assets/Go North assets Renders/0098.png","assets/Go North assets Renders/0099.png"]},{"name":"The Odd Job","category":"Other","images":["assets/Go North assets Renders/0100.png","assets/Go North assets Renders/0101.png","assets/Go North assets Renders/0102.png"]},{"name":"Round Thing","category":"Other","images":["assets/Go North assets Renders/0103.png","assets/Go North assets Renders/0104.png","assets/Go North assets Renders/0105.png"]},{"name":"Tiny Friend","category":"Other","images":["assets/Go North assets Renders/0106.png","assets/Go North assets Renders/0107.png","assets/Go North assets Renders/0108.png"]}];
+          const root = document.getElementById('game-go-north');
+          const cards = [...root.querySelectorAll('.gn-card')];
+          const filters = [...root.querySelectorAll('[data-gn-filter]')];
+          const more = root.querySelector('#gn-show-more');
+          let category = 'All', expanded = false;
+          function updateGallery() {
+            let shown = 0, matching = 0;
+            cards.forEach(card => {
+              const matches = category === 'All' || card.dataset.category === category;
+              if (matches) matching++;
+              const visible = matches && (expanded || shown < 9);
+              card.hidden = !visible;
+              if (visible) shown++;
+            });
+            more.hidden = expanded || matching <= 9;
+            more.textContent = `Show all ${matching} assets ↓`;
+          }
+          filters.forEach(button => button.addEventListener('click', () => {
+            category = button.dataset.gnFilter; expanded = false;
+            filters.forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+            updateGallery();
+          }));
+          more.addEventListener('click', () => { expanded = true; updateGallery(); });
+          updateGallery();
+          const dialog = document.getElementById('gn-viewer');
+          const image = dialog.querySelector('#gn-viewer-image');
+          const title = dialog.querySelector('#gn-viewer-title');
+          const counter = dialog.querySelector('.gn-count');
+          const thumbs = dialog.querySelector('.gn-thumbs');
+          let assetIndex = 0, viewIndex = 0;
+          function showView() {
+            const asset = assets[assetIndex];
+            title.textContent = asset.name; image.src = asset.images[viewIndex]; image.alt = `${asset.name}, view ${viewIndex + 1}`;
+            counter.textContent = `View ${viewIndex + 1} of ${asset.images.length}`;
+            dialog.querySelector('.gn-prev').disabled = asset.images.length < 2;
+            dialog.querySelector('.gn-next').disabled = asset.images.length < 2;
+            thumbs.innerHTML = '';
+            asset.images.forEach((src, i) => {
+              const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', `Show view ${i + 1}`); b.setAttribute('aria-pressed', String(i === viewIndex));
+              const img = document.createElement('img'); img.src = src; img.alt = ''; b.appendChild(img);
+              b.addEventListener('click', () => { viewIndex = i; showView(); }); thumbs.appendChild(b);
+            });
+          }
+          root.querySelectorAll('[data-gn-open]').forEach(button => button.addEventListener('click', () => { assetIndex = Number(button.dataset.gnOpen); viewIndex = 0; showView(); dialog.showModal(); }));
+          dialog.querySelector('.gn-close').addEventListener('click', () => dialog.close());
+          dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+          dialog.querySelector('.gn-prev').addEventListener('click', () => { viewIndex = (viewIndex - 1 + assets[assetIndex].images.length) % assets[assetIndex].images.length; showView(); });
+          dialog.querySelector('.gn-next').addEventListener('click', () => { viewIndex = (viewIndex + 1) % assets[assetIndex].images.length; showView(); });
+          dialog.addEventListener('keydown', event => { if (event.key === 'ArrowLeft') dialog.querySelector('.gn-prev').click(); if (event.key === 'ArrowRight') dialog.querySelector('.gn-next').click(); });
         })();
 
         // --- 1. NAVIGATION LOGIC ---
