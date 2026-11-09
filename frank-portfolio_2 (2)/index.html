@@ -2172,29 +2172,75 @@
             navIndicator.style.transform = `translateX(${leftPos - 4}px)`;
         }
 
-        function navigateTo(pageId) {
+        // --- SPA ROUTING: keep browser Back/Forward in sync with visible sections ---
+        function renderPage(pageId) {
+            const target = document.getElementById(pageId);
+            if (!target || !target.classList.contains('page-section')) return false;
+
             navItems.forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.getElementById(`nav-${pageId}`);
-            if(activeBtn) {
+            const navPageId = ['home', 'work', 'lab', 'about', 'marketplace'].includes(pageId)
+                ? pageId
+                : 'work';
+            const activeBtn = document.getElementById(`nav-${navPageId}`);
+            if (activeBtn) {
                 activeBtn.classList.add('active');
                 updateIndicator(activeBtn);
             }
 
             document.querySelectorAll('.page-section').forEach(section => {
                 section.classList.remove('active');
-                setTimeout(() => {
-                    if(!section.classList.contains('active')) section.style.display = 'none';
-                }, 600);
+                if (section !== target) {
+                    setTimeout(() => {
+                        if (!section.classList.contains('active')) section.style.display = 'none';
+                    }, 600);
+                }
             });
 
-            const target = document.getElementById(pageId);
-            if(target) {
-                target.style.display = 'block';
-                setTimeout(() => {
-                    target.classList.add('active');
-                    window.scrollTo(0, 0);
-                }, 50);
+            target.style.display = 'block';
+            requestAnimationFrame(() => {
+                target.classList.add('active');
+                window.scrollTo(0, 0);
+            });
+            return true;
+        }
+
+        function navigateTo(pageId) {
+            if (!document.getElementById(pageId)?.classList.contains('page-section')) return;
+            const nextUrl = `#${encodeURIComponent(pageId)}`;
+            if (window.location.hash !== nextUrl) {
+                window.history.pushState({ pageId }, '', nextUrl);
             }
+            renderPage(pageId);
+        }
+
+        function openProject(projectId) {
+            if (!document.getElementById(projectId)?.classList.contains('page-section')) return;
+            const nextUrl = `#${encodeURIComponent(projectId)}`;
+            if (window.location.hash !== nextUrl) {
+                window.history.pushState({ pageId: projectId }, '', nextUrl);
+            }
+            renderPage(projectId);
+        }
+
+        function getPageFromUrl() {
+            if (!window.location.hash) return 'home';
+            try {
+                return decodeURIComponent(window.location.hash.slice(1));
+            } catch (error) {
+                return 'home';
+            }
+        }
+
+        // Restore direct links and browser Back/Forward navigation.
+        window.addEventListener('popstate', () => {
+            renderPage(getPageFromUrl());
+        });
+
+        const initialPageId = getPageFromUrl();
+        if (document.getElementById(initialPageId)?.classList.contains('page-section')) {
+            renderPage(initialPageId);
+        } else {
+            renderPage('home');
         }
 
         function openLightbox(src, type) {
@@ -2237,30 +2283,7 @@
             if (e.key === 'Escape') closeLightbox();
         });
 
-        function openProject(projectId) {
-            navItems.forEach(btn => btn.classList.remove('active'));
-            const workBtn = document.getElementById('nav-work');
-            if (workBtn) {
-                workBtn.classList.add('active');
-                updateIndicator(workBtn);
-            }
-
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.classList.remove('active');
-                setTimeout(() => {
-                    if(!section.classList.contains('active')) section.style.display = 'none';
-                }, 600);
-            });
-
-            const target = document.getElementById(projectId);
-            if(target) {
-                target.style.display = 'block';
-                setTimeout(() => {
-                    target.classList.add('active');
-                    window.scrollTo(0, 0);
-                }, 50);
-            }
-        }
+        // openProject is handled by the shared SPA router above.
 
         function goToWorkCategory(categoryId) {
             navigateTo('work');
