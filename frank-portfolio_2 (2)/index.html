@@ -607,73 +607,57 @@
                     </div>
                 </article>
 
-                <!-- Category 5: Product Visualization -->
-                <article id="cat-product-visualization" class="group hover-trigger tilt-card-wrapper cursor-pointer relative col-span-2 lg:col-span-4 row-span-1 rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('work-product-visualization')">
-                    <div class="tilt-card w-full h-full">
-                        <div class="tilt-content w-full h-full relative">
-                            <img src="assets/infinix.png" alt="Product Visualization" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-500"></div>
-                            <div class="relative z-10 w-full h-full flex items-center justify-center p-8 text-center">
-                                <div>
-                                    <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Product Visualization</span>
-                                    <h3 class="font-display text-2xl md:text-3xl font-bold text-white mt-2">Product Visualization</h3>
-                                    <p class="text-xs text-white/80 mt-2 uppercase tracking-widest">Phone Brands &bull; Product Renders</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Category 6: VFX (small banner) -->
-                <article id="cat-vfx" class="relative col-span-2 lg:col-span-4 row-span-1 rounded-3xl overflow-hidden bg-stone-200 flex items-center justify-center">
-                    <span class="font-mono text-xs text-stone-400 uppercase tracking-widest">VFX &bull; Coming Soon</span>
+                <!-- VFX -->
+                <article id="cat-vfx" class="group hover-trigger tilt-card-wrapper cursor-pointer relative col-span-2 lg:col-span-4 row-span-1 rounded-3xl overflow-hidden bg-stone-900" onclick="openProject('work-vfx')" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProject('work-vfx')}">
+                    <div class="tilt-card w-full h-full"><div class="tilt-content w-full h-full relative">
+                        <img src="assets/vfx-infinix-gemini-motherboard-01.webp" alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-500"></div>
+                        <div class="relative z-10 w-full h-full flex items-center justify-center p-8 text-center"><div>
+                            <span class="text-accent text-[10px] md:text-xs font-bold uppercase tracking-widest">Visual Effects</span>
+                            <h3 class="font-display text-2xl md:text-3xl font-bold text-white mt-2">VFX</h3>
+                            <p class="text-xs text-white/80 mt-2 uppercase tracking-widest">Infinix &bull; Google Gemini</p>
+                        </div></div>
+                    </div></div>
                 </article>
             </div>
         </div>
     </main>
 
-    <!-- ================= PAGE: WORK - PRODUCT VISUALIZATION ================= -->
-    <main id="work-product-visualization" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+    <!-- ================= PAGE: WORK - VFX ================= -->
+    <main id="work-vfx" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
         <div class="max-w-7xl mx-auto">
-            <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke="currentColor" stroke-width="2"></path></svg>
-                Back to Work
-            </button>
-
-            <div class="flex items-center gap-6 mb-16">
-                <h2 class="font-display text-4xl md:text-5xl font-bold">PRODUCT VISUALIZATION</h2>
-                <div class="h-[1px] flex-grow bg-stone-300"></div>
+            <button onclick="navigateTo('work')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">← Back to Work</button>
+            <div class="flex items-center gap-6 mb-16"><h2 class="font-display text-4xl md:text-5xl font-bold">VFX</h2><div class="h-px flex-grow bg-stone-300"></div></div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <button type="button" onclick="openProject('project-infinix-gemini')" class="group hover-trigger text-left rounded-3xl overflow-hidden bg-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent" aria-label="View Infinix × Gemini VFX project">
+                    <div class="relative aspect-video overflow-hidden"><img src="assets/vfx-infinix-gemini-motherboard-01.webp" alt="" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"><div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent"></div><div class="absolute inset-x-0 bottom-0 p-6 md:p-8"><span class="text-accent text-xs font-bold uppercase tracking-widest">VFX</span><h3 class="font-display text-2xl md:text-3xl font-bold text-white mt-2">Infinix × Gemini</h3></div></div>
+                </button>
             </div>
+        </div>
+    </main>
 
-            <div class="mb-12">
-                <p class="text-xs font-bold uppercase tracking-widest text-accent mb-3">Phone Brands</p>
-                <h3 class="font-display text-3xl md:text-4xl font-bold">Phone brands I've worked with</h3>
-            </div>
-
-            <div class="flex flex-wrap items-center justify-center gap-3 md:gap-8 max-w-fit mx-auto">
-                <div class="rounded-xl bg-stone-100 border border-stone-200 px-5 py-3 flex items-center justify-center">
-                    <span class="font-display text-base md:text-lg font-bold">Infinix</span>
+    <!-- ================= PAGE: PROJECT - INFINIX × GEMINI ================= -->
+    <main id="project-infinix-gemini" class="page-section min-h-screen pt-32 px-6 md:px-10 pb-24">
+        <div class="max-w-5xl mx-auto">
+            <button onclick="openProject('work-vfx')" class="hover-trigger flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors mb-10">← Back to VFX</button>
+            <span class="text-accent text-xs font-bold uppercase tracking-widest mb-4 block">VFX &bull; Campaign</span>
+            <h1 class="font-display text-5xl md:text-7xl font-bold leading-[0.95] mb-10">Infinix × Gemini</h1>
+            <div class="aspect-video w-full rounded-3xl overflow-hidden bg-stone-900 mb-16 md:mb-24"><img src="assets/vfx-infinix-gemini-motherboard-01.webp" alt="A blue-lit motherboard render from the Infinix and Gemini campaign" class="w-full h-full object-cover"></div>
+            <section class="grid md:grid-cols-12 gap-4 md:gap-8 mb-16 md:mb-24">
+                <div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">01</span><h2 class="font-display text-3xl font-bold mt-2">Brief</h2></div>
+                <div class="md:col-span-8"><p class="text-lg text-muted leading-relaxed">A VFX and motion collaboration for the Infinix × Google Gemini campaign, bringing the phone and its digital world to life.</p>
+                    <div class="mt-10 grid sm:grid-cols-2 gap-10"><div><span class="block text-xs font-bold uppercase tracking-widest text-muted mb-4">Client</span><div class="flex items-center gap-4 flex-wrap"><img src="assets/vfx-infinix-gemini-infinix.svg" alt="Infinix" class="w-24 h-auto"><span class="text-stone-400" aria-hidden="true">×</span><img src="assets/vfx-infinix-gemini-gemini.svg" alt="Google Gemini" class="w-28 h-auto"></div></div>
+                    <div><span class="block text-xs font-bold uppercase tracking-widest text-muted mb-4">Credits</span><dl class="space-y-2 text-sm"><div><dt class="text-muted inline">VFX — </dt><dd class="font-bold inline">Frank</dd></div><div><dt class="text-muted inline">UI Motion design — </dt><dd class="font-bold inline">Akura Wachin</dd></div><div><dt class="text-muted inline">Comp — </dt><dd class="font-bold inline">Maxx Universal</dd></div></dl></div></div>
                 </div>
-                <div class="rounded-xl bg-stone-100 border border-stone-200 px-5 py-3 flex items-center justify-center">
-                    <span class="font-display text-base md:text-lg font-bold text-stone-400">Samsung</span>
-                </div>
-                <div class="rounded-xl bg-stone-100 border border-stone-200 px-5 py-3 flex items-center justify-center">
-                    <span class="font-display text-base md:text-lg font-bold text-stone-400">TECNO</span>
-                </div>
-            </div>
-
-            <div class="mt-16">
-                <div class="flex items-center gap-6 mb-8">
-                    <h3 class="font-display text-3xl md:text-4xl font-bold">Infinix</h3>
-                    <div class="h-[1px] flex-grow bg-stone-300"></div>
-                </div>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <img src="assets/infinix.png" alt="Infinix product render" class="block w-full h-auto rounded-3xl">
-
-                    <img src="assets/infinix1.png" alt="Infinix product render" class="block w-full h-auto rounded-3xl">
-                    <img src="assets/infinix2.png" alt="Infinix product render" class="block w-full h-auto rounded-3xl">
-                </div>
-            </div>
+            </section>
+            <section class="mb-16 md:mb-24"><div class="grid md:grid-cols-12 gap-4 md:gap-8 mb-8"><div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">02</span><h2 class="font-display text-3xl font-bold mt-2">The work</h2></div><p class="md:col-span-8 text-lg text-muted leading-relaxed">The campaign film and its final product sequence.</p></div>
+                <div class="grid md:grid-cols-2 gap-4"><figure><video controls playsinline preload="metadata" class="block w-full aspect-video rounded-2xl bg-stone-900 object-contain" src="assets/vfx-infinix-gemini-campaign.mp4"></video><figcaption class="text-xs uppercase tracking-widest text-muted mt-3">Campaign film</figcaption></figure><figure><video controls playsinline preload="metadata" class="block w-full aspect-video rounded-2xl bg-stone-900 object-contain" src="assets/vfx-infinix-gemini-ending.mp4"></video><figcaption class="text-xs uppercase tracking-widest text-muted mt-3">Ending sequence</figcaption></figure></div>
+            </section>
+            <section class="mb-16 md:mb-24"><div class="grid md:grid-cols-12 gap-4 md:gap-8 mb-8"><div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">03</span><h2 class="font-display text-3xl font-bold mt-2">Style frames</h2></div><p class="md:col-span-8 text-lg text-muted leading-relaxed">Rendered frames and product studies from the project.</p></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4"><img src="assets/vfx-infinix-gemini-motherboard-01.webp" alt="Motherboard render with luminous chips" class="w-full rounded-2xl"><img src="assets/vfx-infinix-gemini-motherboard-02.webp" alt="Blue-lit motherboard environment render" class="w-full rounded-2xl"><img src="assets/vfx-infinix-gemini-phone-01.webp" alt="Infinix phone product render" class="w-full rounded-2xl bg-stone-100"><img src="assets/vfx-infinix-gemini-phone-02.webp" alt="Infinix phone product study" class="w-full rounded-2xl bg-stone-100"><img src="assets/vfx-infinix-gemini-phone-03.webp" alt="Infinix phone product detail" class="w-full rounded-2xl bg-stone-100"></div>
+            </section>
+            <section><div class="grid md:grid-cols-12 gap-4 md:gap-8 mb-8"><div class="md:col-span-4"><span class="font-mono text-xs text-stone-400 uppercase tracking-widest">04</span><h2 class="font-display text-3xl font-bold mt-2">Animatic</h2></div><p class="md:col-span-8 text-lg text-muted leading-relaxed">An early animation test.</p></div><video controls playsinline preload="metadata" class="block w-full aspect-video rounded-2xl bg-stone-900 object-contain" src="assets/vfx-infinix-gemini-animatic.mp4"></video></section>
+            <div class="mt-24 pt-10 border-t border-stone-300"><button onclick="openProject('work-vfx')" class="hover-trigger text-sm font-medium text-muted hover:text-accent transition-colors">← Back to VFX</button></div>
         </div>
     </main>
 
