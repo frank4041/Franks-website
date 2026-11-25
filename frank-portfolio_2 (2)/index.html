@@ -2546,7 +2546,7 @@
             const OPEN = 'assets/frank-open.png';
             const CLOSED = 'assets/frank-closed.png';
             function scheduleBlink() {
-                const nextBlinkIn = 2000 + Math.random() * 3500; // 2-5.5s between blinks
+                const nextBlinkIn = 800 + Math.random() * 1400; // 0.8-2.2s between blinks
                 setTimeout(() => {
                     portrait.src = CLOSED;
                     setTimeout(() => {
